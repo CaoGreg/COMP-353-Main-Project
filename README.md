@@ -7,7 +7,7 @@
   * `pip install flask` or `pip3 isntall flask`  depending on your python installations
   * `pip install sshtunnel`
   * `pip install pymysql`
-  * `pip install dotenv`
+  * `pip install python-dotenv`
 ### Environment File
 * Make an `.env` file on the root directory, inside you should include:
  
