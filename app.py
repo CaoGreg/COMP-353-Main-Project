@@ -85,11 +85,9 @@ def postings():
         </div>
         {% endblock %}
         """
-        file.write(html)
-        file.close()
-        return render_template('postings-results.html')
+        return render_template('postings.html', list_of_postings=search_postings(title, category))
     else:
-        return render_template('postings.html')
+        return render_template('postings.html', list_of_postings=search_postings("", ""))
 
 
 @app.route('/jobapplication', methods=['GET', 'POST'])

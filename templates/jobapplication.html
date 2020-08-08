@@ -13,5 +13,29 @@
         <input type="email" placeholder="Email" name="email">
       <input class="btn btn-success" type="submit" value="Submit Application">
     </form>
+    <table class="table" id="posting-table">
+      <thead>
+        <tr>
+          <th scope="col">Posting ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">Job Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Posting Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for postings in list_of_postings %}
+        <tr>
+            {% for col in postings %}
+            <td>
+                str(col)
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 </div>
 {% endblock %}
