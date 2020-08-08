@@ -6,6 +6,7 @@ from sshtunnel import SSHTunnelForwarder
 import pymysql
 import os
 
+from db_connection import search_postings
 
 app = Flask(__name__)
 bootstrap = Bootstrap()
@@ -54,6 +55,15 @@ def index():
 
 @app.route('/postings', methods=['GET', 'POST'])
 def postings():
+    title = None
+    category = None
+
+    if request.method == 'POST':
+        title = request.form['title_search']
+        category = request.form['category_search']
+        postings = search_postings(title, category)
+    # for rows in postings:
+
     return render_template('postings.html')
 
 @app.route('/login', methods=['GET', 'POST'])
