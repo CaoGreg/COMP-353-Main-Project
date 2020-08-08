@@ -120,7 +120,7 @@ def applied_jobs():
       </div>
       <div class="text-center">
       <br>
-      <button type="submit" class="btn btn-success mb-2">Remove Application</button>
+      <button type="submit" class="btn btn-success mb-2">Withdraw Application</button>
     </form>
     </div>
     {% endblock %}
