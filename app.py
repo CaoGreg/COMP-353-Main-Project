@@ -1,8 +1,8 @@
 from flask import Flask, flash, render_template,session, abort, url_for, redirect, request, session
 from flask_bootstrap import Bootstrap
 from db_connection import *
+from db_connection import get_login
 
-connection = db_connection
 app = Flask(__name__)
 bootstrap = Bootstrap()
 
@@ -65,6 +65,9 @@ def change_user_name():
     if new_name != "":
         change_name(email, new_name)
     return render_template('user-profile.html')
+@app.route('/postings')
+def postings():
+    return render_template('postings.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,10 +79,10 @@ def login():
 
         email = request.form['username']
         password = request.form['password']
-        account = connection.get_Login(email,password)
+        account = get_login(email,password)
 
         if account:
-            session['logginIn'] = True
+            session['logged_In'] = True
             session['username'] = account[0]
             flash('logged in successfully')
             redirect(url_for('index'))

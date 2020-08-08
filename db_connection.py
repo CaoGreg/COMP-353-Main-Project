@@ -22,7 +22,7 @@ db_connection = pymysql.connect(
     host='localhost', port=server.local_bind_port, db='oxc353_1', user=db_user,
     password=db_password, charset='utf8mb4')
 
-def get_Login(email,password):
+def get_login(email,password):
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute('SELECT * FROM MP_User WHERE email = %s AND password = %s',
