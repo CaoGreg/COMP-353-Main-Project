@@ -73,7 +73,7 @@ def remove_job_application(application_id):
     return
 
   
-def application_job(posting_id, email):
+def add_application_job(posting_id, email):
     data = []
     today = date.today()
     cursor = db_connection.cursor()
@@ -81,6 +81,22 @@ def application_job(posting_id, email):
     cursor.execute("""INSERT INTO MP_Job_application(posting_id, email, application_date, status)
                 VALUES(%s, %s, %s, %s)""",
                 (posting_id, email, today.strftime("%Y-%m-%d"), 'pending'))
+    for row in cursor:
+        data.append(row)
+        print(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+  
+  
+def add_posting_job(email, job_title, description, category):
+    data = []
+    today = date.today()
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""INSERT INTO MP_Job_posting(email, job_title, description, posting_date, status, category)
+                VALUES(%s, %s, %s, %s, %s, %s)""",
+                (email, job_title, description, today.strftime("%Y-%m-%d"), 'active', category))
     for row in cursor:
         data.append(row)
         print(row)
