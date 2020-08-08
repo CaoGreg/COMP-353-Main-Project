@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from sshtunnel import SSHTunnelForwarder
+from datetime import date
 import pymysql
 import os
 
@@ -36,18 +37,30 @@ def get_all_users():
 
 
 def search_postings(title, category):
-    if title is None:
-        title = ""
-    if category is None:
-        category = ""
     data = []
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     query = "SELECT * FROM MP_Job_posting " \
             "WHERE job_title LIKE '% " + title + "%' " \
-            "OR category LIKE '%" + category+"%';"
+            "AND category LIKE '%" + category+"%';"
     cursor.execute(query)
     for row in cursor:
         data.append(row)
     cursor.close()
+    return data
+
+
+def application_job(posting_id, email):
+    data = []
+    today = date.today()
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""INSERT INTO MP_Job_application(posting_id, email, application_date, status)
+                VALUES(%s, %s, %s, %s)""",
+                (posting_id, email, today.strftime("%Y-%m-%d"), 'pending'))
+    for row in cursor:
+        data.append(row)
+        print(row)
+    cursor.close()
+    db_connection.commit()
     return data
