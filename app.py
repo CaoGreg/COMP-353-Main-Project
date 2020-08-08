@@ -56,6 +56,14 @@ def index():
 def postings():
     return render_template('postings.html')
 
+@app.route('/appliedJobs')
+def applied_jobs():
+    return render_template('appliedJobs.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
