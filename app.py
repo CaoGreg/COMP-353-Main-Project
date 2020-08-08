@@ -76,15 +76,13 @@ def login():
 
         email = request.form['username']
         password = request.form['password']
-        account = connection.get_User(email,password)
+        account = connection.get_Login(email,password)
 
         if account:
             session['logginIn'] = True
             session['username'] = account[0]
             flash('logged in successfully')
             redirect(url_for('index'))
-        # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-        #     error = 'Invalid Credentials. Please try again.'
         else:
             error = 'Invalid Credentials. Please try again.'
             return redirect(url_for('index'))
