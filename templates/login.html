@@ -9,10 +9,14 @@
     <h1>Please login</h1>
     <br>
     <form action="" method="post">
-      <input type="text" placeholder="Username" name="username" value="{{
+      <input type="text" placeholder="Email" name="username" value="{{
         request.form.username }}">
        <input type="password" placeholder="Password" name="password" value="{{
         request.form.password }}">
       <input class="btn btn-success" type="submit" value="Login">
     </form>
+</div>
+<div class="container">
+  <button type="submit" class="btn btn-success mb-2">Forgot Password</button>
+</div>
 {% endblock %}

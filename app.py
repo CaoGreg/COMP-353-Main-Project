@@ -1,7 +1,8 @@
-from flask import Flask, render_template, session, abort, url_for, redirect, request, flash
+from flask import Flask, flash, render_template,session, abort, url_for, redirect, request, session
 from flask_bootstrap import Bootstrap
 from db_connection import *
 
+connection = db_connection
 app = Flask(__name__)
 bootstrap = Bootstrap()
 
@@ -68,13 +69,25 @@ def change_user_name():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('index'))
 
+    error = None
+    # form fields
+    if request.method == 'POST':
+
+        email = request.form['username']
+        password = request.form['password']
+        account = connection.get_User(email,password)
+
+        if account:
+            session['logginIn'] = True
+            session['username'] = account[0]
+            flash('logged in successfully')
+            redirect(url_for('index'))
+        # if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        #     error = 'Invalid Credentials. Please try again.'
+        else:
+            error = 'Invalid Credentials. Please try again.'
+            return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
 
@@ -127,5 +140,6 @@ def add_job_posting():
 
 
 if __name__ == "__main__":
+    app.secret_key = 'secret123'
     app.run(debug=True)
 
