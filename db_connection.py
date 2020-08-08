@@ -49,7 +49,7 @@ def search_postings(title, category):
     return data
 
 
-def application_job(posting_id, email):
+def add_application_job(posting_id, email):
     data = []
     today = date.today()
     cursor = db_connection.cursor()
