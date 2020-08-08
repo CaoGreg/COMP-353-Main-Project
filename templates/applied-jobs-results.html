@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    h1 {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>My Applications</h1>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Application ID</th>
+          <th scope="col">Posting ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">Application Date</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job_application in list_of_job_applications %}
+        <tr>
+            <td>{{ job_application[0] }}</td>
+            <td>{{ job_application[1] }}</td>
+            <td>{{ job_application[2] }}</td>
+            <td>{{ job_application[3] }}</td>
+            <td>{{ job_application[4] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <h1>Remove Applications</h1>
+    <br>
+    <form  id="application_id_form" method="post" action="/delete_application">
+      <div class="form-group">
+        <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
+      </div>
+      <div class="text-center">
+        <br>
+        <button type="submit" class="btn btn-success mb-2">Remove Application</button>
+      </div>
+    </form>
+</div>
+{% endblock %}
+    
