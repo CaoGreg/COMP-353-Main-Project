@@ -1,0 +1,45 @@
+
+        {% extends 'base.html' %}
+    
+        {% block head %}
+        <style>
+            h1 {text-align: center;}
+        </style>
+        {% endblock %}
+    
+        {% block body %}
+        <div class="container">
+            <h1>My Applications</h1>
+            <br>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Application ID</th>
+                  <th scope="col">Posting ID</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Application Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+        <tr><td>8</td>
+<td>1</td>
+<td>Aoyama@weeb.com</td>
+<td>2020-06-20</td>
+<td>rejected</td>
+</tr><tr><td>9</td>
+<td>2</td>
+<td>Aoyama@weeb.com</td>
+<td>2020-06-20</td>
+<td>rejected</td>
+</tr><tr><td>10</td>
+<td>3</td>
+<td>Aoyama@weeb.com</td>
+<td>2020-06-20</td>
+<td>rejected</td>
+</tr>
+            </tbody>
+        </table>
+        </div>
+        {% endblock %}
+        

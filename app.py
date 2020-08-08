@@ -57,32 +57,38 @@ def index():
 def postings():
     return render_template('postings.html')
 
-@app.route('/appliedJobs')
+
+@app.route('/applied_jobs', methods=['GET', 'POST'])
 def applied_jobs():
-    email = None
+    html = ""
+    email = 'aoyama@weeb.com'
     open('templates/applied-jobs-results.html', 'w').close()
 
-    if request.method == 'POST':
-        email = "aoyama@weeb.com"
-
-        file = open('templates/applied-jobs-results.html')
+    if request.method == 'GET':
+        file = open('templates/applied-jobs-results.html', 'w')
         html = """
-        {% extends 'base.html' %}{% block body %}
-        <div class="container"><h1>Job Search Page</h1><br><form id="job-search-engine" action="" method="post"><input type="text" placeholder="Job Title" name="title_search"><input type="text" placeholder="Category" name="category_search"><input class="btn btn-success" type="submit" value="Search"></form><br><br></div>
+        {% extends 'base.html' %}
+    
+        {% block head %}
+        <style>
+            h1 {text-align: center;}
+        </style>
+        {% endblock %}
+    
+        {% block body %}
         <div class="container">
-            <table class="table" id="posting-table">
+            <h1>My Applications</h1>
+            <br>
+            <table class="table">
               <thead>
                 <tr>
+                  <th scope="col">Application ID</th>
                   <th scope="col">Posting ID</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Job Title</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Posting Date</th>
+                  <th scope="col">Application Date</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Category</th>
                 </tr>
               </thead>
-              <tbody>
         """
         results = get_job_applications(email)
 
@@ -91,21 +97,32 @@ def applied_jobs():
             for col in rows:
                 html += "<td>" + str(col) + "</td>\n"
             html += "</tr>"
+
         html += """
+                <br>
+                <form  id="my_form" method="post" ><div class="form-group">
+                 <label for='username'></label>
+                    <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
+                    <button type="submit" class="btn btn-success mb-2">Remove Application</button>
+                </div>
+                </form>  
             </tbody>
         </table>
         </div>
         {% endblock %}
         """
+
+        print(html)
+
         file.write(html)
         file.close()
         return render_template('applied-jobs-results.html')
-    else:
-        return render_template('appliedJobs.html')
+
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     return render_template('settings.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -117,6 +134,7 @@ def login():
             return redirect(url_for('index'))
 
     return render_template('login.html', error=error)
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def register():

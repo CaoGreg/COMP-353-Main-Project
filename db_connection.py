@@ -36,9 +36,11 @@ def get_all_users():
 
 
 def get_job_applications(email):
+    query = "SELECT * FROM MP_Job_application " \
+            "WHERE MP_Job_application.email = '" + email + "';"
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
-    cursor.execute("SELECT * FROM MP_Job_posting WHERE MP_Job_posting = " + email)
+    cursor.execute(query)
     data = []
     for row in cursor:
         print(row)
