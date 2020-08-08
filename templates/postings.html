@@ -5,5 +5,39 @@
 {% endblock %}
 
 {% block body %}
-
+<div class="container">
+    <h1>Job Search Page</h1>
+    <br>
+    <form id="job-search-engine" action="" method="post">
+      <input type="text" placeholder="Job Title" name="title_search">
+       <input type="text" placeholder="Category" name="category_search">
+      <input class="btn btn-success" type="submit" value="Search">
+    </form>
+    <br>
+    <br>
+    <table class="table" id="posting-table">
+      <thead>
+        <tr>
+          <th scope="col">Posting ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">Job Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Posting Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for postings in list_of_postings %}
+        <tr>
+            {% for col in postings %}
+            <td>
+                {{ col }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 {% endblock %}
