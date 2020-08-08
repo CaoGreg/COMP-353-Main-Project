@@ -52,8 +52,10 @@ def get_job_applications(email):
 def remove_job_application(application_id):
     query = "DELETE FROM MP_Job_application "\
             "WHERE MP_Job_application.application_id = " + application_id + ";"
+    print(query)
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute(query)
     cursor.close()
+    db_connection.commit()
     return
