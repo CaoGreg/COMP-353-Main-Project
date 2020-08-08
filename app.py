@@ -2,9 +2,6 @@ from flask import Flask, render_template, session, abort, url_for, redirect, req
 from flask_bootstrap import Bootstrap
 from db_connection import *
 
-
-from db_connection import search_postings
-
 app = Flask(__name__)
 bootstrap = Bootstrap()
 
@@ -13,6 +10,28 @@ bootstrap = Bootstrap()
 def index():
     return render_template('index.html')
 
+
+
+@app.route('/delete_application', methods=['GET', 'POST'])
+def del_application():
+    application_id = None
+
+    if request.method == 'POST':
+        application_id = request.form['application_id']
+        remove_job_application(application_id)
+        return applied_jobs()
+
+
+@app.route('/applied_jobs', methods=['GET', 'POST'])
+def applied_jobs():
+    email = 'aoyama@weeb.com'
+
+    return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
+
+
+@app.route('/user-profile', methods=['GET', 'POST'])
+def settings():
+    return render_template('user-profile.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])

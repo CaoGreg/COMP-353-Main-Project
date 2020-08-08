@@ -29,11 +29,23 @@ def get_all_users():
     cursor.execute("SELECT email, name, is_active, user_type, is_admin FROM MP_User")
     data = []
     for row in cursor:
-        print(row)
         data.append(row)
     cursor.close()
     return data
 
+
+def get_job_applications(email):
+    query = "SELECT * FROM MP_Job_application " \
+            "WHERE MP_Job_application.email = '" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    data = []
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    return data
+  
 
 def search_postings(title, category):
     data = []
@@ -49,6 +61,18 @@ def search_postings(title, category):
     return data
 
 
+def remove_job_application(application_id):
+    query = "DELETE FROM MP_Job_application "\
+            "WHERE MP_Job_application.application_id = " + application_id + ";"
+    print(query)
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+  
 def application_job(posting_id, email):
     data = []
     today = date.today()
