@@ -13,8 +13,7 @@ server = SSHTunnelForwarder(
     ('login.encs.concordia.ca', 22),
     ssh_username=encs_user,
     ssh_password=encs_password,
-    remote_bind_address=(db_host, 3306),
-    local_bind_address=('127.0.0.1', 3306))
+    remote_bind_address=(db_host, 3306))
 
 server.start()
 
@@ -29,7 +28,6 @@ def get_all_users():
     cursor.execute("SELECT email, name, is_active, user_type, is_admin FROM MP_User")
     data = []
     for row in cursor:
-        print(row)
         data.append(row)
     cursor.close()
     return data
@@ -43,7 +41,6 @@ def get_job_applications(email):
     cursor.execute(query)
     data = []
     for row in cursor:
-        print(row)
         data.append(row)
     cursor.close()
     return data
