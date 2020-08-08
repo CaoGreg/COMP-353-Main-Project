@@ -63,6 +63,18 @@ def add_job_application():
         return render_template('add_job_application.html')
 
 
+@app.route('/add_job_posting', methods=['GET', 'POST'])
+def add_job_posting():
+    if request.method == 'POST':
+        email = request.form['email']
+        job_title = request.form['job_title']
+        description = request.form['description']
+        category = request.form['category']
+        return render_template('add_job_posting.html', posting_result=add_posting_job(email, job_title, description, category))
+    else:
+        return render_template('add_job_posting.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
