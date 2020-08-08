@@ -3,13 +3,13 @@ from sshtunnel import SSHTunnelForwarder
 import pymysql
 import os
 
-def load_db():
+
+def get_all_users():
     load_dotenv()
     encs_user = os.getenv("ENCS_USR")
     encs_password = os.getenv("ENCS_PWD")
     db_user = os.getenv("DB_USR")
     db_password = os.getenv("DB_PWD")
-
     db_host = 'oxc353.encs.concordia.ca'
     with SSHTunnelForwarder(
         ('login.encs.concordia.ca', 22),
@@ -22,7 +22,11 @@ def load_db():
             host='localhost', port=port, db='oxc353_1', user=db_user,
             password=db_password, charset='utf8mb4')
         cursor = db_connection.cursor()
-        # cursor.execute("USE oxc353_1")
-        # cursor.execute("SELECT * FROM MP_User")
-        # for table in cursor:
-        #     print(table)
+        cursor.execute("USE oxc353_1")
+        cursor.execute("SELECT email, name, is_active, user_type, is_admin FROM MP_User")
+        data = []
+        for row in cursor:
+            print(row)
+            data.append(row)
+        db_connection.close()
+        return data
