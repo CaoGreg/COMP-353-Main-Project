@@ -2,8 +2,6 @@ from flask import Flask, render_template,session, abort, url_for, redirect, requ
 from flask_bootstrap import Bootstrap
 from db_connection import *
 
-from db_connection import *
-
 app = Flask(__name__)
 bootstrap = Bootstrap()
 
@@ -18,7 +16,7 @@ def postings():
     return render_template('postings.html')
 
 
-@app.route('/delete_application', methods =['GET', 'POST'])
+@app.route('/delete_application', methods=['GET', 'POST'])
 def del_application():
     application_id = None
 
@@ -30,70 +28,14 @@ def del_application():
 
 @app.route('/applied_jobs', methods=['GET', 'POST'])
 def applied_jobs():
-    html = ""
     email = 'aoyama@weeb.com'
-    open('templates/applied-jobs-results.html', 'w').close()
 
-    file = open('templates/applied-jobs-results.html', 'w')
-    html = """
-    {% extends 'base.html' %}
-
-    {% block head %}
-    <style>
-        h1 {text-align: center;}
-    </style>
-    {% endblock %}
-
-    {% block body %}
-    <div class="container">
-        <h1>My Applications</h1>
-        <br>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Application ID</th>
-              <th scope="col">Posting ID</th>
-              <th scope="col">Email</th>
-              <th scope="col">Application Date</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-    """
-    results = get_job_applications(email)
-
-    for rows in results:
-        html += "<tr>"
-        for col in rows:
-            html += "<td>" + str(col) + "</td>\n"
-        html += "</tr>"
-
-    html += """             
-      </tbody>
-    </table>
-    <br>
-    <h1>Remove Applications</h1>
-    <br>
-    <form  id="application_id_form" method="post" action="/delete_application"><div class="form-group">
-      <div class="form-group">
-        <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
-      </div>
-      <div class="text-center">
-      <br>
-      <button type="submit" class="btn btn-success mb-2">Withdraw Application</button>
-    </form>
-    </div>
-    {% endblock %}
-    """
-
-    file.write(html)
-    file.close()
-    return render_template('applied-jobs-results.html')
+    return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/user-profile', methods=['GET', 'POST'])
 def settings():
-    return render_template('settings.html')
+    return render_template('user-profile.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
