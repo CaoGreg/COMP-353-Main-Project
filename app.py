@@ -6,7 +6,7 @@ from sshtunnel import SSHTunnelForwarder
 import pymysql
 import os
 
-from db_connection import get_job_applications
+from db_connection import *
 
 app = Flask(__name__)
 bootstrap = Bootstrap()
@@ -61,10 +61,16 @@ def postings():
 @app.route('/applied_jobs', methods=['GET', 'POST'])
 def applied_jobs():
     html = ""
+    application_id = None
     email = 'aoyama@weeb.com'
     open('templates/applied-jobs-results.html', 'w').close()
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        application_id = request.form['application_id']
+        remove_job_application(application_id)
+
+
+    else:
         file = open('templates/applied-jobs-results.html', 'w')
         html = """
         {% extends 'base.html' %}
@@ -89,6 +95,7 @@ def applied_jobs():
                   <th scope="col">Status</th>
                 </tr>
               </thead>
+              <tbody>
         """
         results = get_job_applications(email)
 
@@ -98,21 +105,21 @@ def applied_jobs():
                 html += "<td>" + str(col) + "</td>\n"
             html += "</tr>"
 
-        html += """
-                <br>
-                <form  id="my_form" method="post" ><div class="form-group">
-                 <label for='username'></label>
-                    <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
-                    <button type="submit" class="btn btn-success mb-2">Remove Application</button>
-                </div>
-                </form>  
-            </tbody>
+        html += """             
+          </tbody>
         </table>
+        <br>
+        <h1>Remove Applications</h1>
+        <br>
+        <form  id="application_id_form" method="post" ><div class="form-group">                
+          <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
+          <div class="text-center">
+          <br>
+          <button type="submit" class="btn btn-success mb-2">Remove Application</button>
+        </form>
         </div>
         {% endblock %}
         """
-
-        print(html)
 
         file.write(html)
         file.close()
