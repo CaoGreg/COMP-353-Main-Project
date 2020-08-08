@@ -13,10 +13,19 @@
         request.form.username }}">
        <input type="password" placeholder="Password" name="password" value="{{
         request.form.password }}">
+
+
       <input class="btn btn-success" type="submit" value="Login">
+        <br>
+{#        <span id="passwordHelpBlock" class="help-block"><a href="forgot">Forgot Password?</a></span>#}
     </form>
+
+        <span id="passwordHelpBlock" class="help-block"><a href="forgot">Forgot Password?</a></span>
+
 </div>
-<div class="container">
-  <button type="submit" class="btn btn-success mb-2">Forgot Password</button>
-</div>
+{#<div class="container">#}
+{#    <form class="form-inline row" method="post">#}
+{#        <a class="ml-3" href="forgot"><button class="btn btn-danger " type="button">Forgot Password</button></a>#}
+{#    </form>#}
+{#</div>#}
 {% endblock %}

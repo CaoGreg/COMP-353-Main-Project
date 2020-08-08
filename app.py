@@ -89,8 +89,25 @@ def login():
         else:
             error = 'Invalid Credentials. Please try again.'
             return redirect(url_for('login'))
+
+    # if request.method == 'GET':
+    #     return render_template('forgot')
     return render_template('login.html', error=error)
 
+
+@app.route('/forgot', methods=[ 'POST'])
+def forgot_password():
+    error = None
+    # form fields
+    if request.method == 'POST':
+        email = request.form['email']
+        name = request.form['name']
+        password = get_forgotten(email,name)
+        flash('password is: ' + password)
+    else:
+        error = 'Invalid Credentials. Please try again.'
+        return redirect(url_for('forgot'))
+    return render_template('forgot.html', error=error)
 
 @app.route('/registration', methods=['GET', 'POST'])
 def register():

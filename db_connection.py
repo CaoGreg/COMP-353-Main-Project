@@ -31,6 +31,15 @@ def get_login(email,password):
     cursor.close()
     return account
 
+def get_forgotten(email,name):
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute('SELECT password FROM MP_User WHERE email = %s AND name = %s',
+                   (email, name,))
+    password = cursor.fetchone()
+    cursor.close()
+    return password
+
 def get_all_users():
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
