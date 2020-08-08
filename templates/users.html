@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>List of Users</h1>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Email</th>
+          <th scope="col">Name</th>
+          <th scope="col">Is Active</th>
+          <th scope="col">User Type</th>
+          <th scope="col">Is Admin</th>
+        </tr>
+        {% for user in list_of_users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ 'Yes' if user[2] == 1 else 'No' }}</td>
+            <td>{{ user[3] }}</td>
+            <td>{{ 'Yes' if user[4] == 1 else 'No' }}</td>
+        </tr>
+        {% endfor %}
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+</div>
+{% endblock %}
