@@ -105,8 +105,11 @@ def postings():
 
 @app.route('/jobapplication', methods=['GET', 'POST'])
 def jobapplication():
-    # if request.method == 'POST':
-    return render_template('jobapplication.html')
+    if request.method == 'POST':
+
+        return render_template('jobapplication.html')
+    else:
+        return render_template('jobapplication.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
