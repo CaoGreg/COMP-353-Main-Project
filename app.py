@@ -52,7 +52,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/postings')
+@app.route('/postings', methods=['GET', 'POST'])
 def postings():
     return render_template('postings.html')
 
