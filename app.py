@@ -1,7 +1,6 @@
 from flask import Flask, flash, render_template,session, abort, url_for, redirect, request, session
 from flask_bootstrap import Bootstrap
 from db_connection import *
-from db_connection import get_login
 
 app = Flask(__name__)
 bootstrap = Bootstrap()
@@ -72,7 +71,6 @@ def postings():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     error = None
     # form fields
     if request.method == 'POST':
@@ -83,12 +81,14 @@ def login():
 
         if account:
             session['logged_In'] = True
-            session['username'] = account[0]
+            session['userID'] = account[0]
+            session['email'] = account[1]
+            session_user = session['email']
             flash('logged in successfully')
-            redirect(url_for('index'))
+            return redirect(url_for('index'))
         else:
             error = 'Invalid Credentials. Please try again.'
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
     return render_template('login.html', error=error)
 
 
@@ -106,6 +106,16 @@ def register():
 @app.route('/users')
 def users():
     return render_template('users.html', list_of_users=get_all_users())
+
+
+@app.route('/logout')
+def logout():
+    session.pop('userID', None)
+    session.pop('email', None)
+    session.pop('logged_In', None)
+    flash('You are logged out.')
+    session['logged_In'] = False
+    return redirect('/')
 
 
 @app.route('/postings', methods=['GET', 'POST'])
