@@ -141,6 +141,26 @@ def remove_job_posting(posting_id):
     return
 
 
+def set_posting_active(posting_id):
+    query = "UPDATE MP_Job_posting SET status=%s WHERE posting_id=%s"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query, ('active', posting_id))
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def set_posting_inactive(posting_id):
+    query = "UPDATE MP_Job_posting SET status=%s WHERE posting_id=%s"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query, ('inactive', posting_id))
+    cursor.close()
+    db_connection.commit()
+    return
+
+
 def add_application_job(posting_id, email):
     data = []
     today = date.today()

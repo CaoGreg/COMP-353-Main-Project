@@ -36,8 +36,13 @@
             <td>{{ job_posting[6] }}</td>
             <td><form method="GET" action="/view_applications/{{ job_posting[0] }}">
                 <input type="submit" value="View Applications" /></form></td>
-            <td><form method="POST" action="/toggle_active/{{ job_posting[0] }}">
-                <input type="submit" value="Set {{ 'Active' if job_posting[5] == inactive else 'Inactive' }}" /></form></td>
+            {% if job_posting[5] == 'inactive' %}
+            <td><form method="POST" action="/set_active/{{ job_posting[0] }}">
+                <input type="submit" value="Set Active" /></form></td>
+            {% else %}
+            <td><form method="POST" action="/set_inactive/{{ job_posting[0] }}">
+                <input type="submit" value="Set Inactive" /></form></td>
+            {% endif %}
             <td><form method="GET" action="/modify_posting/{{ job_posting[0] }}">
                 <input type="submit" value="Modify" /></form></td>
             <td><form method="POST" action="/delete_posting/{{ job_posting[0] }}">
