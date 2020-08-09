@@ -303,7 +303,6 @@ def add_posting_job(email, job_title, description, category):
 def check_user_category():
     data = []
     today = date.today()
-    # To change email with user session's email
     email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -321,14 +320,28 @@ def check_user_category():
 def check_user_num_of_application():
     data = []
     today = date.today()
-    # To change email with user session's email
     email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute("""SELECT COUNT(*) FROM MP_Job_application
     WHERE email = %s
-    """,
-        (email))
+    """, email)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+
+
+def check_employer_num_of_posting():
+    data = []
+    today = date.today()
+    email = session['email']
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""SELECT COUNT(*) FROM MP_Job_posting
+    WHERE email = %s
+    """, email)
     for row in cursor:
         data.append(row)
     cursor.close()
@@ -339,7 +352,6 @@ def check_user_num_of_application():
 def update_user_category(new_category):
     data = []
     today = date.today()
-    # To change email with user session's email
     email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")

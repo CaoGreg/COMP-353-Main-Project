@@ -276,16 +276,34 @@ def add_job_application():
 
 @app.route('/add_job_posting', methods=['GET', 'POST'])
 def add_job_posting():
+    num_of_postings = check_employer_num_of_posting()
+    usercategory = check_user_category()
+
     if request.method == 'POST':
-        email = session['email']
-        job_title = request.form['job_title']
-        description = request.form['description']
-        category = request.form['category']
-        add_posting_job(email, job_title, description, category)
-        file = open("log.txt", "a")
-        file.write("\n" + str(date.today()) + " New job Posting: " + email + ", Posting: " + job_title + ", " + description + ", " + category)
-        file.close()
-        return redirect('/employer_postings')
+        if usercategory[0][0] == 'Employer Prime':
+            if num_of_postings[0][0] >= 5:
+                return render_template('add_job_posting.html', msg="YOU CAN'T ADD MORE POSTINGS, LIMIT OF 5 REACHED")
+            else:
+                email = session['email']
+                job_title = request.form['job_title']
+                description = request.form['description']
+                category = request.form['category']
+                add_posting_job(email, job_title, description, category)
+                file = open("log.txt", "a")
+                file.write("\n" + str(
+                    date.today()) + " New job Posting: " + email + ", Posting: " + job_title + ", " + description + ", " + category)
+                file.close()
+                return redirect('/employer_postings')
+        else:
+            email = session['email']
+            job_title = request.form['job_title']
+            description = request.form['description']
+            category = request.form['category']
+            add_posting_job(email, job_title, description, category)
+            file = open("log.txt", "a")
+            file.write("\n" + str(date.today()) + " New job Posting: " + email + ", Posting: " + job_title + ", " + description + ", " + category)
+            file.close()
+            return redirect('/employer_postings')
     else:
         return render_template('add_job_posting.html')
 
