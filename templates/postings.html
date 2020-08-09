@@ -8,11 +8,17 @@
 <div class="container">
     <h1>Welcome to the Job Search Website!</h1>
     <br>
+    {% if session['logged_In'] == True and session['is_suffering'] == 0 %}
     <form id="job-search-engine" action="" method="post">
       <input type="text" placeholder="Job Title" name="title_search">
        <input type="text" placeholder="Category" name="category_search">
       <input class="btn btn-success" type="submit" value="Search">
     </form>
+    {% elif session['logged_In'] == True and session['is_suffering'] == 1 %}
+    <h2>Your account is currently frozen. Please resolve your account balance.</h2>
+    {% else %}
+    <h3>Please sign in to continue</h3>
+    {% endif %}
     <br>
     <br>
     <table class="table" id="posting-table">

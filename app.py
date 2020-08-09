@@ -139,14 +139,20 @@ def login():
 
         email = request.form['username']
         password = request.form['password']
-        account = get_login(email,password)
+        account = get_login(email, password)
+        is_frozen = get_frozen(email)
 
         if account:
+            if account[4] == 0:
+                error = 'Your account is deactivated. Please contact a system administrator'
+                return render_template('login.html', error=error)
+
             session['logged_In'] = True
             session['userID'] = account[0]
             session['email'] = account[1]
             session['user_type'] = account[5]
             session['is_admin'] = account[6]
+            session['is_suffering'] = is_frozen[2]
             flash('logged in successfully')
             return redirect(url_for('postings'))
         else:
@@ -176,7 +182,7 @@ def register():
         email = request.form['email']
         password = request.form['password']
         user_type = request.form['user_type']
-        account = get_login(email,password)
+        account = get_login(email, password)
         if account:
             flash('email' + str(account[1]) + 'already registered')
         else:
@@ -238,6 +244,15 @@ def add_job_posting():
         return redirect('/employer_postings')
     else:
         return render_template('add_job_posting.html')
+
+
+@app.route('/activate_user', methods=['GET', 'POST'])
+def admin_activate_user():
+    if request.method == 'POST':
+        email = request.form['email']
+        is_active = request.form['is_active']
+        activate_user(email, is_active)
+    return render_template('admin-activate-user.html', list_of_users=get_all_users())
 
 
 if __name__ == "__main__":

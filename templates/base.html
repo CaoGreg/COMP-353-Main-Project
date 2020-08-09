@@ -16,6 +16,7 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
+            {% if session['logged_In'] == True and session['is_suffering'] == 0 %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 User Actions
@@ -27,6 +28,8 @@
                 <a class="dropdown-item" href="modify_user_profile">Modify Profile</a>
               </div>
             </li>
+            {% endif %}
+            {% if session['logged_In'] == True and session['user_type'] == "Employer" and session['is_suffering'] == 0 %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEmployer" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Employer Actions
@@ -38,6 +41,19 @@
                 <a class="dropdown-item" href="users">View Users</a>
               </div>
             </li>
+            {% endif %}
+            {% if session['logged_In'] == True and session['is_admin'] == 1 and session['is_suffering'] == 0 %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Admin Actions
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="activate_user">Activate/Deactivate a user</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="system_activity">System_activity</a>
+              </div>
+            </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>

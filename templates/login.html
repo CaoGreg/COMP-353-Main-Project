@@ -17,5 +17,8 @@
         <br>
     </form>
         <span id="passwordHelpBlock" class="help-block"><a href="forgot">Forgot Password?</a></span>
+    {% if error != None %}
+    <h5>{{ error }}</h5>
+    {% endif %}
 </div>
 {% endblock %}

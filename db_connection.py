@@ -344,3 +344,25 @@ def update_user_category(new_category):
     cursor.close()
     db_connection.commit()
     return data
+
+
+def activate_user(email,is_active):
+    query = "UPDATE MP_User SET MP_User.is_active=" + is_active + " "\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def get_frozen(email):
+    query = "SELECT * FROM MP_User_balance " \
+            "WHERE MP_User_balance.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    is_suffering = cursor.fetchone()
+    cursor.close()
+    return is_suffering
