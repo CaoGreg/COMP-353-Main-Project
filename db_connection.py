@@ -64,7 +64,6 @@ def search_postings(title, category):
 def remove_job_application(application_id):
     query = "DELETE FROM MP_Job_application "\
             "WHERE MP_Job_application.application_id = " + application_id + ";"
-    print(query)
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute(query)
@@ -87,6 +86,58 @@ def add_application_job(posting_id, email):
     cursor.close()
     db_connection.commit()
     return data
+
+
+def change_password(email, new_password):
+    query = "UPDATE MP_User SET MP_User.password='" + new_password + "'"\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def change_name(email, new_name):
+    query = "UPDATE MP_User SET MP_User.name='" + new_name + "'"\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def delete_account(email):
+    mp_user_query = "DELETE FROM MP_User "\
+                    "WHERE MP_User.email='" + email + "';"
+    mp_bill_query = "DELETE FROM MP_Bill " \
+                    "WHERE MP_Bill.email='" + email + "';"
+    mp_job_application_query = "DELETE FROM MP_Job_application " \
+                               "WHERE MP_Job_application.email='" + email + "';"
+    mp_job_offer_query = "DELETE FROM MP_Job_offer " \
+                         "WHERE MP_Job_offer.email='" + email + "';"
+    mp_paid_using_query = "DELETE FROM MP_Paid_using " \
+                          "WHERE MP_Paid_using.email='" + email + "';"
+    mp_sub_to_query = "DELETE FROM MP_Subscribed_to " \
+                      "WHERE MP_Subscribed_to.email='" + email + "';"
+    mp_user_balance_query = "DELETE FROM MP_User_balance " \
+                            "WHERE MP_User_balance.email='" + email + "';"
+
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(mp_bill_query)
+    cursor.execute(mp_job_application_query)
+    cursor.execute(mp_job_offer_query)
+    cursor.execute(mp_paid_using_query)
+    cursor.execute(mp_sub_to_query)
+    cursor.execute(mp_user_balance_query)
+    cursor.execute(mp_user_query)
+    cursor.close()
+    db_connection.commit()
+    return
   
   
 def add_posting_job(email, job_title, description, category):

@@ -9,22 +9,30 @@
 {% block body %}
 
 <div class="container">
-    <h1>Modify Account</h1>
+    <h1>Modify Profile</h1>
     <br>
-    <form  id="user_settings_form" method="post" >
-    <div class="form-group">
-        <input type="email" class="form-control" name="e-mail" value="" placeholder="Old Email" id="old_e-mail">
-    </div>
-    <div class="form-group">
-         <input type="email" class="form-control" name="e-mail" value="" placeholder="New Email" id="new_e-mail">
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" name="username" value="" placeholder="Username" id="username">
-    </div>
-    <div class="form-group">
-         <input type="password" class="form-control" name="password" value="" placeholder="Password" id="password">
-    </div>
-    <button type="Apply" class="btn btn-success mb-2">Apply</button>
- </form>
+    <form  id="change_pw_form" method="post"action="/modify_password">
+        <h5>Change Password</h5>
+        <div class="form-group">
+             <input type="password" class="form-control" name="new_password" value="" placeholder="New Password" id="new_password">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mb-2">Change Password</button>
+        </div>
+    </form>
+    <form id="change_name_form" method="post"action="/modify_name">
+        <h5>Modify Name</h5>
+        <div class="form-group">
+            <input type="text" class="form-control" name="new_name" value="" placeholder="New Name" id="new_name">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success mb-2">Change Name</button>
+        </div>
+    </form>
+    <form  id="user_delete_form" method="post"action="/delete_user_account">
+       <div>
+            <button type="submit" class="btn btn-success mb-2">Delete Account</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
