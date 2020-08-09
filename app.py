@@ -101,6 +101,8 @@ def forgot_password():
         name = request.form['name']
         password = get_forgotten(email, name)
         flash('password is: ' + str(password))
+        feedback = str(password)
+        return feedback
     else:
         error = 'Invalid Credentials. Please try again.'
     return render_template('forgot.html', error=error)
