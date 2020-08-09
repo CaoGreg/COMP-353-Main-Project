@@ -25,3 +25,7 @@
 2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: active
 2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: inactive
 2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: active
+2020-08-09 User logged in: Jan@office.com, Employer
+2020-08-09 New job Posting: Jan@office.com, Posting: IT Support2, Support IT problems2, IT
+2020-08-09 New job Posting: Jan@office.com, Posting: IT Support3, Support IT problems3, IT
+2020-08-09 User signed out: Jan@office.com
