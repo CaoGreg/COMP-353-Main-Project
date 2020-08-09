@@ -130,7 +130,9 @@ def postings():
     if request.method == 'POST':
         title = request.form['title_search']
         category = request.form['category_search']
-    return render_template('postings.html', list_of_postings=search_postings(title, category))
+        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
+    else:
+        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
 
 
 @app.route('/add_job_application', methods=['GET', 'POST'])
