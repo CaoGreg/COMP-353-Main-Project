@@ -11,26 +11,58 @@ def index():
     return render_template('index.html')
 
 
-
 @app.route('/delete_application', methods=['GET', 'POST'])
 def del_application():
-    application_id = None
-
     if request.method == 'POST':
         application_id = request.form['application_id']
         remove_job_application(application_id)
         return applied_jobs()
 
 
-@app.route('/applied_jobs', methods=['GET', 'POST'])
+@app.route('/applied_jobs')
 def applied_jobs():
+    #update with email once session is done
     email = 'aoyama@weeb.com'
 
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/user-profile', methods=['GET', 'POST'])
-def settings():
+@app.route('/user-profile')
+def user_profile():
+    return render_template('user-profile.html')
+
+
+@app.route('/modify_user_profile', methods=['GET', 'POST'])
+def change_user_profile():
+    return render_template('user-profile.html')
+
+
+@app.route('/delete_user_account', methods=['POST', 'GET'])
+def delete_user_account():
+    # update with email once session is done
+    email = 'dummy@weeb.com'
+    delete_account(email)
+    return redirect(url_for('index'))
+
+
+@app.route('/modify_password', methods=['POST', 'GET'])
+def change_user_password():
+    # update with email once session is done
+    email = 'aoyama@weeb.com'
+    password = request.form['new_password']
+    print(password)
+    if password != "":
+        change_password(email, password)
+    return render_template('user-profile.html')
+
+
+@app.route('/modify_name', methods=['POST', 'GET'])
+def change_user_name():
+    # update with email once session is done
+    email = 'aoyama@weeb.com'
+    new_name = request.form['new_name']
+    if new_name != "":
+        change_name(email, new_name)
     return render_template('user-profile.html')
 
 
