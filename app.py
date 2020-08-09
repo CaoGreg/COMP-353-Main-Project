@@ -25,29 +25,17 @@ def applied_jobs():
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/employer_postings/')
+@app.route('/employer_postings')
 def employer_postings():
     email = session['email']
     return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
 
 
-#@app.route('/employer_postings/')
-#def employer_postings():
-#    email = session['email']
-#    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
-
-
-#@app.route('/employer_postings/')
-#def employer_postings():
-#    email = session['email']
-#    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
-
-
-@app.route('/employer_postings/delete_posting/<posting_id>', methods=['GET', 'POST'])
+@app.route('/delete_posting/<posting_id>', methods=['GET', 'POST'])
 def delete_posting(posting_id):
-    if request.method == 'GET':
+    if request.method == 'POST':
         remove_job_posting(posting_id)
-        return employer_postings()
+        return redirect('/employer_postings')
 
 
 @app.route('/user-profile')
@@ -176,7 +164,8 @@ def add_job_posting():
         job_title = request.form['job_title']
         description = request.form['description']
         category = request.form['category']
-        return render_template('add_job_posting.html', posting_result=add_posting_job(email, job_title, description, category))
+        add_posting_job(email, job_title, description, category)
+        return redirect('/employer_postings')
     else:
         return render_template('add_job_posting.html')
 
