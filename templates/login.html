@@ -9,10 +9,23 @@
     <h1>Please login</h1>
     <br>
     <form action="" method="post">
-      <input type="text" placeholder="Username" name="username" value="{{
+      <input type="text" placeholder="Email" name="username" value="{{
         request.form.username }}">
        <input type="password" placeholder="Password" name="password" value="{{
         request.form.password }}">
+
+
       <input class="btn btn-success" type="submit" value="Login">
+        <br>
+{#        <span id="passwordHelpBlock" class="help-block"><a href="forgot">Forgot Password?</a></span>#}
     </form>
+
+        <span id="passwordHelpBlock" class="help-block"><a href="forgot">Forgot Password?</a></span>
+
+</div>
+{#<div class="container">#}
+{#    <form class="form-inline row" method="post">#}
+{#        <a class="ml-3" href="forgot"><button class="btn btn-danger " type="button">Forgot Password</button></a>#}
+{#    </form>#}
+{#</div>#}
 {% endblock %}

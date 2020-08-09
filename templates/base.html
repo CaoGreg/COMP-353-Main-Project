@@ -48,8 +48,16 @@
             </li>
           </ul>
             <form class="form-inline row" method="post">
-                <a class="mr-2" href="login"><button class="btn btn-secondary " type="button">Sign In</button></a>
-                <a class="mr-2" href="registration"><button class="btn btn-primary" type="button">Sign Up</button></a>
+                {% if session['logged_In'] == True %}
+                    {{ session['email'] }}
+                    <a class="mr-2" href="logout"><button class="btn btn-secondary " type="button">Sign Out</button></a>
+                {% elif session['logged_In'] == False %}
+                    <a class="mr-2" href="login"><button class="btn btn-secondary " type="button">Sign In</button></a>
+                    <a class="mr-2" href="registration"><button class="btn btn-primary" type="button">Sign Up</button></a>
+                {% else %}
+                    <a class="mr-2" href="login"><button class="btn btn-secondary " type="button">Sign In</button></a>
+                    <a class="mr-2" href="registration"><button class="btn btn-primary" type="button">Sign Up</button></a>
+                {% endif %}
             </form>
         </div>
       </nav>

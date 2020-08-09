@@ -9,11 +9,11 @@
     <h1>Sign Up</h1>
     <br>
     <form  id="my_form" method="post" ><div class="form-group">
-        <label for='username'></label>
-         <input type="text" class="form-control" name="username" value="" placeholder="Username" id="username">
+        <label for='name'></label>
+         <input type="text" class="form-control" name="name" value="{{ request.form.name }}" placeholder="FirstName   LastName" id="username">
      </div>
      <div class="form-group">
-         <input type="email" class="form-control" name="e-mail" value="" placeholder="Email" id="e-mail">
+         <input type="email" class="form-control" name="email" value="{{ request.form.email }}" placeholder="Email" id="e-mail">
      </div>
      <div class="form-group">
          <input type="email" class="form-control" name="confirm_email" value="" placeholder="Confirm Email" id="confirm_e-mail">

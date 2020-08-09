@@ -23,6 +23,28 @@ db_connection = pymysql.connect(
     password=db_password, charset='utf8mb4')
 
 
+def get_login(email, password):
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute('SELECT * FROM MP_User WHERE email = %s AND password = %s',
+                   (email, password,))
+    account = cursor.fetchone()
+    cursor.close()
+    return account
+
+
+def get_forgotten(email, name):
+    print(str(email) + " " + str(name))
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute('SELECT password FROM MP_User WHERE email = %s AND name = %s',
+                   (email, name,))
+    password = cursor.fetchone()
+    cursor.close()
+    print(password)
+    return password
+
+
 def get_all_users():
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
