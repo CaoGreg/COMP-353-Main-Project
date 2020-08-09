@@ -18,6 +18,7 @@
           <th scope="col">Email</th>
           <th scope="col">Application Date</th>
           <th scope="col">Status</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -28,22 +29,12 @@
             <td>{{ job_application[2] }}</td>
             <td>{{ job_application[3] }}</td>
             <td>{{ job_application[4] }}</td>
+            <td><form method="POST" action="/delete_application/{{ job_application[0] }}">
+                <input type="submit" value="Withdraw" /></form></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-    <br>
-    <h1>Remove Applications</h1>
-    <br>
-    <form  id="application_id_form" method="post" action="/delete_application">
-      <div class="form-group">
-        <input type="text" class="form-control" name="application_id" value="" placeholder="Application ID" id="application_id">
-      </div>
-      <div class="text-center">
-        <br>
-        <button type="submit" class="btn btn-success mb-2">Remove Application</button>
-      </div>
-    </form>
 </div>
 {% endblock %}
     

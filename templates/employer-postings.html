@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    h1 {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>My Postings</h1>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Posting ID</th>
+          <th scope="col">Job Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Posting Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Category</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job_posting in list_of_job_postings %}
+        <tr>
+            <td>{{ job_posting[0] }}</td>
+            <td>{{ job_posting[2] }}</td>
+            <td>{{ job_posting[3] }}</td>
+            <td>{{ job_posting[4] }}</td>
+            <td>{{ job_posting[5] }}</td>
+            <td>{{ job_posting[6] }}</td>
+            <td><form method="GET" action="/view_applications/{{ job_posting[0] }}">
+                <input type="submit" value="View Applications" /></form></td>
+            {% if job_posting[5] == 'inactive' %}
+            <td><form method="POST" action="/set_active/{{ job_posting[0] }}">
+                <input type="submit" value="Set Active" /></form></td>
+            {% else %}
+            <td><form method="POST" action="/set_inactive/{{ job_posting[0] }}">
+                <input type="submit" value="Set Inactive" /></form></td>
+            {% endif %}
+            <td><form method="GET" action="/modify_posting/{{ job_posting[0] }}">
+                <input type="submit" value="Modify" /></form></td>
+            <td><form method="POST" action="/delete_posting/{{ job_posting[0] }}">
+                <input type="submit" value="Delete" /></form></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
+    

@@ -7,16 +7,22 @@ bootstrap = Bootstrap()
 
 
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/delete_application', methods=['GET', 'POST'])
-def del_application():
+def postings():
+    title = ""
+    category = ""
     if request.method == 'POST':
-        application_id = request.form['application_id']
+        title = request.form['title_search']
+        category = request.form['category_search']
+        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
+    else:
+        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
+
+
+@app.route('/delete_application/<application_id>', methods=['GET', 'POST'])
+def delete_application(application_id):
+    if request.method == 'POST':
         remove_job_application(application_id)
-        return applied_jobs()
+        return redirect('/applied_jobs')
 
 
 @app.route('/applied_jobs')
@@ -25,7 +31,64 @@ def applied_jobs():
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/user-profile', methods=['GET', 'POST'])
+@app.route('/employer_postings')
+def employer_postings():
+    email = session['email']
+    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
+
+
+@app.route('/modify_posting/<posting_id>', methods=['GET', 'POST'])
+def modify_posting(posting_id):
+    if request.method == 'POST':
+        job_title = request.form['job_title']
+        description = request.form['description']
+        category = request.form['category']
+        modify_job_posting(posting_id, job_title, description, category)
+        return redirect('/employer_postings')
+    else:
+        return render_template('modify_posting.html')
+
+
+@app.route('/delete_posting/<posting_id>', methods=['GET', 'POST'])
+def delete_posting(posting_id):
+    if request.method == 'POST':
+        remove_job_posting(posting_id)
+        return redirect('/employer_postings')
+
+
+@app.route('/set_active/<posting_id>', methods=['GET', 'POST'])
+def set_active(posting_id):
+    if request.method == 'POST':
+        set_posting_active(posting_id)
+        return redirect('/employer_postings')
+
+
+@app.route('/set_inactive/<posting_id>', methods=['GET', 'POST'])
+def set_inactive(posting_id):
+    if request.method == 'POST':
+        set_posting_inactive(posting_id)
+        return redirect('/employer_postings')
+
+
+@app.route('/view_applications/<posting_id>', methods=['GET', 'POST'])
+def view_applications(posting_id):
+    return render_template('view-applications.html', list_of_applications=get_applications_by_posting(posting_id))
+
+
+@app.route('/accept_application/<posting_id>/<application_id>', methods=['GET', 'POST'])
+def accept_application(posting_id, application_id):
+    if request.method == 'POST':
+        accept_job_application(application_id)
+        return redirect('/view_applications/' + str(posting_id))
+
+
+@app.route('/reject_application/<posting_id>/<application_id>', methods=['GET', 'POST'])
+def reject_application(posting_id, application_id):
+    if request.method == 'POST':
+        reject_job_application(application_id)
+        return redirect('/view_applications/' + str(posting_id))
+
+
 def user_profile():
     user_category = check_user_category()
     user_type = user_category[0][0].split(" ")[0:][0]
@@ -46,7 +109,7 @@ def change_user_profile():
 def delete_user_account():
     email = session['email']
     delete_account(email)
-    return redirect(url_for('index'))
+    return redirect(url_for('postings'))
 
 
 @app.route('/modify_password', methods=['POST', 'GET'])
@@ -85,7 +148,7 @@ def login():
             session['user_type'] = account[5]
             session['is_admin'] = account[6]
             flash('logged in successfully')
-            return redirect(url_for('index'))
+            return redirect(url_for('postings'))
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
@@ -137,18 +200,6 @@ def logout():
     return redirect('/')
 
 
-@app.route('/postings', methods=['GET', 'POST'])
-def postings():
-    title = ""
-    category = ""
-    if request.method == 'POST':
-        title = request.form['title_search']
-        category = request.form['category_search']
-        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
-    else:
-        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
-
-
 @app.route('/add_job_application', methods=['GET', 'POST'])
 def add_job_application():
     usercategory = check_user_category()
@@ -179,11 +230,12 @@ def add_job_application():
 @app.route('/add_job_posting', methods=['GET', 'POST'])
 def add_job_posting():
     if request.method == 'POST':
-        email = request.form['email']
+        email = session['email']
         job_title = request.form['job_title']
         description = request.form['description']
         category = request.form['category']
-        return render_template('add_job_posting.html', posting_result=add_posting_job(email, job_title, description, category))
+        add_posting_job(email, job_title, description, category)
+        return redirect('/employer_postings')
     else:
         return render_template('add_job_posting.html')
 

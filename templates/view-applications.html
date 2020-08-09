@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    h1 {text-align: center;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Applications for Job Posting</h1>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Application ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">Application Date</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job_application in list_of_applications %}
+        <tr>
+            <td>{{ job_application[0] }}</td>
+            <td>{{ job_application[2] }}</td>
+            <td>{{ job_application[3] }}</td>
+            <td>{{ job_application[4] }}</td>
+            {% if job_application[4] == "pending" %}
+            <td><form method="POST" action="/accept_application/{{ job_application[1] }}/{{ job_application[0] }}">
+                <input type="submit" value="Accept" /></form></td>
+            <td><form method="POST" action="/reject_application/{{ job_application[1] }}/{{ job_application[0] }}">
+                <input type="submit" value="Reject" /></form></td>
+            {% endif %}
+            {% if job_application[4] == "rejected" %}
+            <td><form method="POST" action="/accept_application/{{ job_application[1] }}/{{ job_application[0] }}">
+                <input type="submit" value="Accept" /></form></td>
+            <td></td>
+            {% endif %}
+            {% if job_application[4] == "accepted" %}
+            <td><form method="POST" action="/reject_application/{{ job_application[1] }}/{{ job_application[0] }}">
+                <input type="submit" value="Reject" /></form></td>
+            <td></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
+    
