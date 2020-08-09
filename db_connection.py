@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from flask import session
 from sshtunnel import SSHTunnelForwarder
 from datetime import date
 import pymysql
@@ -182,8 +183,7 @@ def check_user_category():
     data = []
     today = date.today()
     # To change email with user session's email
-    email = "Jean@gmail.com"
-    print(email)
+    email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute("""SELECT category FROM MP_Subscribed_to
@@ -192,7 +192,6 @@ def check_user_category():
         (email))
     for row in cursor:
         data.append(row)
-        print(row)
     cursor.close()
     db_connection.commit()
     return data
@@ -202,8 +201,7 @@ def check_user_num_of_application():
     data = []
     today = date.today()
     # To change email with user session's email
-    email = "Jean@gmail.com"
-    print(email)
+    email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute("""SELECT COUNT(*) FROM MP_Job_application
@@ -212,7 +210,6 @@ def check_user_num_of_application():
         (email))
     for row in cursor:
         data.append(row)
-        print(row)
     cursor.close()
     db_connection.commit()
     return data
@@ -222,8 +219,7 @@ def update_user_category(new_category):
     data = []
     today = date.today()
     # To change email with user session's email
-    email = "Jean@gmail.com"
-    print(email)
+    email = session['email']
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute("""UPDATE MP_Subscribed_to
@@ -233,7 +229,6 @@ def update_user_category(new_category):
         (new_category, email))
     for row in cursor:
         data.append(row)
-        print(row)
     cursor.close()
     db_connection.commit()
     return data
