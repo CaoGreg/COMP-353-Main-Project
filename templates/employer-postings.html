@@ -34,7 +34,7 @@
             <td>{{ job_posting[4] }}</td>
             <td>{{ job_posting[5] }}</td>
             <td>{{ job_posting[6] }}</td>
-            <td><form method="GET" action="/view_application/{{ job_posting[0] }}s">
+            <td><form method="GET" action="/view_applications/{{ job_posting[0] }}">
                 <input type="submit" value="View Applications" /></form></td>
             <td><form method="POST" action="/toggle_active/{{ job_posting[0] }}">
                 <input type="submit" value="Set {{ 'Active' if job_posting[5] == inactive else 'Inactive' }}" /></form></td>

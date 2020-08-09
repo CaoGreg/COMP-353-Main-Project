@@ -50,6 +50,11 @@ def delete_posting(posting_id):
         return redirect('/employer_postings')
 
 
+@app.route('/view_applications/<posting_id>', methods=['GET', 'POST'])
+def view_applications(posting_id):
+    return render_template('view-applications.html', list_of_applications=get_applications_by_posting(posting_id))
+
+
 @app.route('/user-profile')
 def user_profile():
     return render_template('user-profile.html')

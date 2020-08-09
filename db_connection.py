@@ -69,6 +69,19 @@ def get_job_applications(email):
     return data
 
 
+def get_applications_by_posting(posting_id):
+    query = "SELECT * FROM MP_Job_application WHERE posting_id=%s"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query, posting_id)
+    data = []
+    for row in cursor:
+        print(row)
+        data.append(row)
+    cursor.close()
+    return data
+
+
 def get_job_postings(user_id):
     query = "SELECT * FROM MP_Job_posting " \
             "WHERE MP_Job_posting.email = '" + user_id + "';"
