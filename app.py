@@ -27,9 +27,16 @@ def applied_jobs():
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/user-profile')
+@app.route('/user-profile', methods=['GET', 'POST'])
 def user_profile():
-    return render_template('user-profile.html')
+    user_category = check_user_category()
+    user_type = user_category[0][0].split(" ")[0:][0]
+    print("user_type ", user_type)
+    if request.method == 'POST':
+        update_user_category(request.form['optradio'])
+        return render_template('user-profile.html', user_type=user_type, msg="SUCCESSFULLY UPDATED YOUR USER CATEGORY")
+    else:
+        return render_template('user-profile.html', user_type=user_type)
 
 
 @app.route('/modify_user_profile', methods=['GET', 'POST'])
@@ -124,6 +131,7 @@ def add_job_application():
                                            application_result=add_application_job(posting_id, email),
                                            msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
             # else they are gold, unlimited application
+            # or they are employer
             else:
                 return render_template('add_job_application.html', application_result=add_application_job(posting_id, email), msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
     else:

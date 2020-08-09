@@ -160,7 +160,7 @@ def check_user_category():
     data = []
     today = date.today()
     # To change email with user session's email
-    email = "David@gmail.com"
+    email = "Jean@gmail.com"
     print(email)
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -180,7 +180,7 @@ def check_user_num_of_application():
     data = []
     today = date.today()
     # To change email with user session's email
-    email = "David@gmail.com"
+    email = "Jean@gmail.com"
     print(email)
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -188,6 +188,27 @@ def check_user_num_of_application():
     WHERE email = %s
     """,
         (email))
+    for row in cursor:
+        data.append(row)
+        print(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+
+
+def update_user_category(new_category):
+    data = []
+    today = date.today()
+    # To change email with user session's email
+    email = "Jean@gmail.com"
+    print(email)
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""UPDATE MP_Subscribed_to
+    SET category = %s
+    WHERE email = %s
+    """,
+        (new_category, email))
     for row in cursor:
         data.append(row)
         print(row)
