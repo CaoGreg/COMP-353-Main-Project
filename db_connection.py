@@ -64,7 +64,6 @@ def search_postings(title, category):
 def remove_job_application(application_id):
     query = "DELETE FROM MP_Job_application "\
             "WHERE MP_Job_application.application_id = " + application_id + ";"
-    print(query)
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
     cursor.execute(query)
@@ -87,3 +86,36 @@ def application_job(posting_id, email):
     cursor.close()
     db_connection.commit()
     return data
+
+
+def change_password(email, new_password):
+    query = "UPDATE MP_User SET MP_User.password='" + new_password + "'"\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def change_name(email, new_name):
+    query = "UPDATE MP_User SET MP_User.name='" + new_name + "'"\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def delete_account(email):
+    query = "DELETE FROM MP_User "\
+            "WHERE MP_User.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
