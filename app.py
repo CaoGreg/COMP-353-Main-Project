@@ -7,16 +7,22 @@ bootstrap = Bootstrap()
 
 
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/delete_application', methods=['GET', 'POST'])
-def del_application():
+def postings():
+    title = ""
+    category = ""
     if request.method == 'POST':
-        application_id = request.form['application_id']
+        title = request.form['title_search']
+        category = request.form['category_search']
+        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
+    else:
+        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
+
+
+@app.route('/delete_application/<application_id>', methods=['GET', 'POST'])
+def delete_application(application_id):
+    if request.method == 'POST':
         remove_job_application(application_id)
-        return applied_jobs()
+        return redirect('/applied_jobs')
 
 
 @app.route('/applied_jobs')
@@ -103,7 +109,7 @@ def change_user_profile():
 def delete_user_account():
     email = session['email']
     delete_account(email)
-    return redirect(url_for('index'))
+    return redirect(url_for('postings'))
 
 
 @app.route('/modify_password', methods=['POST', 'GET'])
@@ -142,7 +148,7 @@ def login():
             session['user_type'] = account[5]
             session['is_admin'] = account[6]
             flash('logged in successfully')
-            return redirect(url_for('index'))
+            return redirect(url_for('postings'))
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
@@ -192,18 +198,6 @@ def logout():
     flash('You are logged out.')
     session['logged_In'] = False
     return redirect('/')
-
-
-@app.route('/postings', methods=['GET', 'POST'])
-def postings():
-    title = ""
-    category = ""
-    if request.method == 'POST':
-        title = request.form['title_search']
-        category = request.form['category_search']
-        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
-    else:
-        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
 
 
 @app.route('/add_job_application', methods=['GET', 'POST'])
