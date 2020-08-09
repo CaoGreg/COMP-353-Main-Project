@@ -6,6 +6,15 @@
 
 {% block body %}
 <div class="container">
+    {% with messages = get_flashed_messages(category_filter=['success']) %}
+        {% if messages %}
+            <div class=flashes>
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <h1>Welcome to the Job Search Website!</h1>
     <br>
     {% if session['logged_In'] == True and session['is_suffering'] == 0 %}
