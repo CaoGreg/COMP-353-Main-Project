@@ -214,11 +214,16 @@ def register():
         email = request.form['email']
         password = request.form['password']
         user_type = request.form['user_type']
+        if user_type == 'Employer':
+            phone = request.form['phone']
+
         account = get_login(email, password)
         if account:
             error = 'email :' + str(account[1]) + ' is already registered'
         else:
             register_user(email, password, name, user_type)
+            if user_type == 'Employer':
+                register_employer(email,phone)
             file = open("log.txt", "a")
             file.write("\n" + str(date.today()) + " New User added: " + name + ", " + email + ", " + user_type)
             file.close()

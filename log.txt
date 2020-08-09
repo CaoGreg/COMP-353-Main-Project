@@ -29,3 +29,18 @@
 2020-08-09 New job Posting: Jan@office.com, Posting: IT Support2, Support IT problems2, IT
 2020-08-09 New job Posting: Jan@office.com, Posting: IT Support3, Support IT problems3, IT
 2020-08-09 User signed out: Jan@office.com
+2020-08-09 User signed out: admin@admin.com
+2020-08-09 User logged in: hello@kitty.com, Employee
+2020-08-09 User signed out: hello@kitty.com
+2020-08-09 User logged in: Abbot@hotmail.com, Employer
+2020-08-09 User signed out: Abbot@hotmail.com
+2020-08-09 User logged in: Aoyama@weeb.com, Employee
+2020-08-09 User signed out: Aoyama@weeb.com
+2020-08-09 User logged in: Abbot@hotmail.com, Employer
+2020-08-09 User signed out: Abbot@hotmail.com
+2020-08-09 New User added: Hello Kitty, hello@kitty.com, Employee
+2020-08-09 User logged in: hello@kitty.com, Employee
+2020-08-09 User signed out: hello@kitty.com
+2020-08-09 New User added: hello bunny, bunny@bunny.com, Employer
+2020-08-09 User logged in: bunny@bunny.com, Employer
+2020-08-09 User signed out: bunny@bunny.com
