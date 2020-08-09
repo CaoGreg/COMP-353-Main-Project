@@ -31,6 +31,18 @@ def employer_postings():
     return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
 
 
+@app.route('/modify_posting/<posting_id>', methods=['GET', 'POST'])
+def modify_posting(posting_id):
+    if request.method == 'POST':
+        job_title = request.form['job_title']
+        description = request.form['description']
+        category = request.form['category']
+        modify_job_posting(posting_id, job_title, description, category)
+        return redirect('/employer_postings')
+    else:
+        return render_template('modify_posting.html')
+
+
 @app.route('/delete_posting/<posting_id>', methods=['GET', 'POST'])
 def delete_posting(posting_id):
     if request.method == 'POST':
@@ -152,7 +164,8 @@ def add_job_application():
     if request.method == 'POST':
         posting_id = request.form['posting_id']
         email = request.form['email']
-        return render_template('add_job_application.html', application_result=add_application_job(posting_id, email))
+        add_application_job(posting_id, email)
+        return redirect('/applied_jobs')
     else:
         return render_template('add_job_application.html')
 

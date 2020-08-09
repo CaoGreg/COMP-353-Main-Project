@@ -107,6 +107,16 @@ def remove_job_application(application_id):
     return
 
 
+def modify_job_posting(posting_id, job_title, description, category):
+    query = "UPDATE MP_Job_posting SET job_title=%s, description=%s, category=%s WHERE posting_id=%s"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query, (job_title, description, category, posting_id))
+    cursor.close()
+    db_connection.commit()
+    return
+
+
 def remove_job_posting(posting_id):
     query = "DELETE FROM MP_Job_posting "\
             "WHERE MP_Job_posting.posting_id = " + posting_id + ";"
