@@ -65,9 +65,6 @@ def change_user_name():
     if new_name != "":
         change_name(email, new_name)
     return render_template('user-profile.html')
-@app.route('/postings')
-def postings():
-    return render_template('postings.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
