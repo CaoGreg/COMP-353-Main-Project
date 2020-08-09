@@ -50,11 +50,6 @@ def delete_posting(posting_id):
         return redirect('/employer_postings')
 
 
-@app.route('/view_applications/<posting_id>', methods=['GET', 'POST'])
-def view_applications(posting_id):
-    return render_template('view-applications.html', list_of_applications=get_applications_by_posting(posting_id))
-
-
 @app.route('/set_active/<posting_id>', methods=['GET', 'POST'])
 def set_active(posting_id):
     if request.method == 'POST':
@@ -67,6 +62,25 @@ def set_inactive(posting_id):
     if request.method == 'POST':
         set_posting_inactive(posting_id)
         return redirect('/employer_postings')
+
+
+@app.route('/view_applications/<posting_id>', methods=['GET', 'POST'])
+def view_applications(posting_id):
+    return render_template('view-applications.html', list_of_applications=get_applications_by_posting(posting_id))
+
+
+@app.route('/accept_application/<posting_id>/<application_id>', methods=['GET', 'POST'])
+def accept_application(posting_id, application_id):
+    if request.method == 'POST':
+        accept_job_application(application_id)
+        return redirect('/view_applications/' + str(posting_id))
+
+
+@app.route('/reject_application/<posting_id>/<application_id>', methods=['GET', 'POST'])
+def reject_application(posting_id, application_id):
+    if request.method == 'POST':
+        reject_job_application(application_id)
+        return redirect('/view_applications/' + str(posting_id))
 
 
 @app.route('/user-profile')
