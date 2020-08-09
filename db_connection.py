@@ -35,10 +35,27 @@ def register_user(email, password, name, user_type):
     cursor.execute("""INSERT INTO MP_User_balance(email, balance, is_suffering)
                 VALUES(%s, 0.00, 0)""",
                    (email))
+    if user_type == 'Employee':
+        cursor.execute("""INSERT INTO MP_Subscribed_to(email, category)
+                VALUES(%s, %s)""",
+                       (email, 'User Basic' ))
+    else:
+        cursor.execute("""INSERT INTO MP_Subscribed_to(email, category)
+                VALUES(%s, %s)""",
+                       (email, 'Employer Prime'))
     cursor.close()
     db_connection.commit()
     return
 
+def register_employer(email,phone):
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""INSERT INTO MP_Employer(email, phone)
+                VALUES(%s, %s)""",
+                   (email, phone))
+    cursor.close()
+    db_connection.commit()
+    return
 
 def get_login(email, password):
     cursor = db_connection.cursor()
