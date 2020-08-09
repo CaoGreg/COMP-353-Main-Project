@@ -6,27 +6,45 @@
 
 {% block body %}
 <div class="container">
-    <h1>Sign Up</h1>
+    <h1>User Sign Up</h1>
     <br>
     <form  id="my_form" method="post" ><div class="form-group">
-        <label for='name'></label>
+        <label for='username'>Full Name</label>
          <input type="text" class="form-control" name="name" value="{{ request.form.name }}" placeholder="FirstName   LastName" id="username">
      </div>
      <div class="form-group">
+         <label for="e-mail">Email</label>
          <input type="email" class="form-control" name="email" value="{{ request.form.email }}" placeholder="Email" id="e-mail">
      </div>
      <div class="form-group">
+         <label for="confirm_e-mail">Confirm Email</label>
          <input type="email" class="form-control" name="confirm_email" value="" placeholder="Confirm Email" id="confirm_e-mail">
      </div>
      <div class="form-group">
-         <input type="password" class="form-control" name="password" value="" placeholder="Password" id="password">
-</div>
+         <label for="password">Password</label>
+         <input type="password" class="form-control" name="password" value="{{ request.form.password }}" placeholder="Password" id="password">
+     </div>
      <div class="form-group">
+         <label for="confirm_password">Confirm Password</label>
          <input type="password" class="form-control" name="confirm_password" value="" placeholder="Confirm Password" id="confirm_password">
+     </div>
+     <div class="form-group">
+         <label for="inputUser">I am an Employee / Employer</label>
+         <select id="inputUser" class="form-control" name="user_type">
+             <option name="user_type" value="Employee">Employee</option>
+             <option name="user_type" value="Employer">Employer</option>
+         </select>
+     </div>
      <div class="text-center">     
          <button type="submit" class="btn btn-success mb-2">Sign Up</button>
     </div>
- </form>  
+        <div class="flashes">
+            {% for message in get_flashed_messages() %}
+                {{ message }}
+            {% endfor %}
+        </div>
+ </form>
+    <h2>{{ msg }}</h2>
 </div>
 
 {% endblock %}

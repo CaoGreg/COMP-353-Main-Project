@@ -109,10 +109,16 @@ def forgot_password():
 def register():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        user_type = request.form['user_type']
+        account = get_login(email,password)
+        if account:
+            flash('email' + str(account[1]) + 'already registered')
         else:
-            return redirect(url_for('index'))
+            register_user(email, password, name, user_type)
+            return render_template('registration.html', msg="USER CREATION SUCCESS")
     return render_template('registration.html', error=error)
 
 

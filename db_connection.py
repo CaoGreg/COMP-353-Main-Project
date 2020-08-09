@@ -23,6 +23,17 @@ db_connection = pymysql.connect(
     host='localhost', port=server.local_bind_port, db='oxc353_1', user=db_user,
     password=db_password, charset='utf8mb4')
 
+def register_user(email, password, name, user_type):
+    is_active = 1
+    is_admin = 0
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""INSERT INTO MP_User(email, password, name, is_active, user_type, is_admin)
+                VALUES(%s, %s, %s, %s, %s, %s)""",
+                   (email, password, name, is_active, user_type, is_admin))
+    cursor.close()
+    db_connection.commit()
+    return
 
 def get_login(email, password):
     cursor = db_connection.cursor()
