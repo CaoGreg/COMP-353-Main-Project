@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, abort, url_for, redirect, request, flash
+from flask import Flask, flash, render_template,session, abort, url_for, redirect, request, session
 from flask_bootstrap import Bootstrap
 from db_connection import *
 
@@ -9,6 +9,7 @@ bootstrap = Bootstrap()
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 
 @app.route('/delete_application', methods=['GET', 'POST'])
@@ -69,13 +70,37 @@ def change_user_name():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    # form fields
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('index'))
 
+        email = request.form['username']
+        password = request.form['password']
+        account = get_login(email,password)
+
+        if account:
+            session['logged_In'] = True
+            session['userID'] = account[0]
+            session['email'] = account[1]
+            session_user = session['email']
+            flash('logged in successfully')
+            return redirect(url_for('index'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
+
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot_password():
+    error = None
+    # form fields
+    if request.method == 'POST':
+        email = request.form['email']
+        name = request.form['name']
+        password = get_forgotten(email, name)
+        flash('password is: ' + str(password[0]))
+    else:
+        error = 'Invalid Credentials. Please try again.'
+    return render_template('forgot.html', error=error)
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -92,6 +117,16 @@ def register():
 @app.route('/users')
 def users():
     return render_template('users.html', list_of_users=get_all_users())
+
+
+@app.route('/logout')
+def logout():
+    session.pop('userID', None)
+    session.pop('email', None)
+    session.pop('logged_In', None)
+    flash('You are logged out.')
+    session['logged_In'] = False
+    return redirect('/')
 
 
 @app.route('/postings', methods=['GET', 'POST'])
@@ -127,5 +162,6 @@ def add_job_posting():
 
 
 if __name__ == "__main__":
+    app.secret_key = 'secret123'
     app.run(debug=True)
 
