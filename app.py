@@ -83,9 +83,15 @@ def reject_application(posting_id, application_id):
         return redirect('/view_applications/' + str(posting_id))
 
 
-@app.route('/user-profile')
 def user_profile():
-    return render_template('user-profile.html')
+    user_category = check_user_category()
+    user_type = user_category[0][0].split(" ")[0:][0]
+    print("user_type ", user_type)
+    if request.method == 'POST':
+        update_user_category(request.form['optradio'])
+        return render_template('user-profile.html', user_type=user_type, msg="SUCCESSFULLY UPDATED YOUR USER CATEGORY")
+    else:
+        return render_template('user-profile.html', user_type=user_type)
 
 
 @app.route('/modify_user_profile', methods=['GET', 'POST'])
@@ -160,10 +166,16 @@ def forgot_password():
 def register():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        user_type = request.form['user_type']
+        account = get_login(email,password)
+        if account:
+            flash('email' + str(account[1]) + 'already registered')
         else:
-            return redirect(url_for('index'))
+            register_user(email, password, name, user_type)
+            return render_template('registration.html', msg="USER CREATION SUCCESS")
     return render_template('registration.html', error=error)
 
 
@@ -189,16 +201,34 @@ def postings():
     if request.method == 'POST':
         title = request.form['title_search']
         category = request.form['category_search']
-    return render_template('postings.html', list_of_postings=search_postings(title, category))
+        return render_template('postings.html', list_of_postings=search_postings(title, category), is_search='true')
+    else:
+        return render_template('postings.html', list_of_postings=get_postings(), is_search='false')
 
 
 @app.route('/add_job_application', methods=['GET', 'POST'])
 def add_job_application():
+    usercategory = check_user_category()
+    print(usercategory[0][0])
+
     if request.method == 'POST':
         posting_id = request.form['posting_id']
         email = request.form['email']
-        add_application_job(posting_id, email)
-        return redirect('/applied_jobs')
+        if usercategory[0][0] == 'User Basic':
+            return render_template('add_job_application.html', msg="YOU CANNOT APPLY TO JOBS AS A BASIC USER")
+        else:
+            if usercategory[0][0] == 'User Prime':
+                num_of_applications = check_user_num_of_application()
+                if num_of_applications[0][0] >= 5:
+                    return render_template('add_job_application.html', msg="YOU CANNOT APPLY TO ANY MORE JOBS AS A PRIME USER, 5 APPLICATIONS MADE ALREADY")
+                else:
+                    return render_template('add_job_application.html',
+                                           application_result=add_application_job(posting_id, email),
+                                           msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
+            # else they are gold, unlimited application
+            # or they are employer
+            else:
+                return render_template('add_job_application.html', application_result=add_application_job(posting_id, email), msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
     else:
         return render_template('add_job_application.html')
 

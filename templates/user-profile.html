@@ -35,4 +35,22 @@
         </div>
     </form>
 </div>
+<br>
+<div class="container">
+    <h1>Change User Category</h1>
+    <br>
+    <form id="change-user-category-form" action="" method="post">
+        {% if user_type == 'User'%}
+            <label class="radio-inline"><input type="radio" name="optradio" value="User Basic">User Basic</label>
+            <label class="radio-inline"><input type="radio" name="optradio" value="User Prime">User Prime</label>
+            <label class="radio-inline"><input type="radio" name="optradio" value="User Gold">User Gold</label>
+        {% else %}
+            <label class="radio-inline"><input type="radio" name="optradio" value="Employer Prime">Employer Prime</label>
+            <label class="radio-inline"><input type="radio" name="optradio" value="Employer Gold">Employer Gold</label>
+        {% endif %}
+        <br>
+        <input class="btn btn-success" type="submit" value="Change Category">
+    </form>
+    <h2>{{ msg }}</h2>
+</div>
 {% endblock %}

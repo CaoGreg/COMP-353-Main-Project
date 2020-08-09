@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from flask import session
 from sshtunnel import SSHTunnelForwarder
 from datetime import date
 import pymysql
@@ -22,6 +23,17 @@ db_connection = pymysql.connect(
     host='localhost', port=server.local_bind_port, db='oxc353_1', user=db_user,
     password=db_password, charset='utf8mb4')
 
+def register_user(email, password, name, user_type):
+    is_active = 1
+    is_admin = 0
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""INSERT INTO MP_User(email, password, name, is_active, user_type, is_admin)
+                VALUES(%s, %s, %s, %s, %s, %s)""",
+                   (email, password, name, is_active, user_type, is_admin))
+    cursor.close()
+    db_connection.commit()
+    return
 
 def get_login(email, password):
     cursor = db_connection.cursor()
@@ -102,6 +114,20 @@ def search_postings(title, category):
     query = "SELECT * FROM MP_Job_posting " \
             "WHERE job_title LIKE '% " + title + "%' " \
             "AND category LIKE '%" + category+"%';"
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    return data
+
+
+def get_postings():
+    data = []
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    query = "SELECT posting_id,MP_Job_posting.email,job_title,description,posting_date,status,category,phone " \
+            "FROM MP_Job_posting,MP_Employer " \
+            "WHERE MP_Job_posting.email = MP_Employer.email;"
     cursor.execute(query)
     for row in cursor:
         data.append(row)
@@ -260,6 +286,61 @@ def add_posting_job(email, job_title, description, category):
     for row in cursor:
         data.append(row)
         print(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+
+
+def check_user_category():
+    data = []
+    today = date.today()
+    # To change email with user session's email
+    email = session['email']
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""SELECT category FROM MP_Subscribed_to
+    WHERE email = %s
+    """,
+        (email))
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+
+
+def check_user_num_of_application():
+    data = []
+    today = date.today()
+    # To change email with user session's email
+    email = session['email']
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""SELECT COUNT(*) FROM MP_Job_application
+    WHERE email = %s
+    """,
+        (email))
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    db_connection.commit()
+    return data
+
+
+def update_user_category(new_category):
+    data = []
+    today = date.today()
+    # To change email with user session's email
+    email = session['email']
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute("""UPDATE MP_Subscribed_to
+    SET category = %s
+    WHERE email = %s
+    """,
+        (new_category, email))
+    for row in cursor:
+        data.append(row)
     cursor.close()
     db_connection.commit()
     return data
