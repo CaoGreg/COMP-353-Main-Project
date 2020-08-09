@@ -23,6 +23,7 @@ db_connection = pymysql.connect(
     host='localhost', port=server.local_bind_port, db='oxc353_1', user=db_user,
     password=db_password, charset='utf8mb4')
 
+
 def register_user(email, password, name, user_type):
     is_active = 1
     is_admin = 0
@@ -34,6 +35,7 @@ def register_user(email, password, name, user_type):
     cursor.close()
     db_connection.commit()
     return
+
 
 def get_login(email, password):
     cursor = db_connection.cursor()
@@ -350,7 +352,7 @@ def update_user_category(new_category):
     return data
 
 
-def activate_user(email,is_active):
+def activate_user(email, is_active):
     query = "UPDATE MP_User SET MP_User.is_active=" + is_active + " "\
             "WHERE MP_User.email='" + email + "';"
     cursor = db_connection.cursor()

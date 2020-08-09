@@ -1,0 +1,27 @@
+2020-08-09 New User added: Weeb weebayeet weeb4@weeb.com Employee
+2020-08-09 User logged in: Aoyama@weeb.com, Employee
+2020-08-09 User password changed: Aoyama@weeb.com, Employee
+2020-08-09 User password changed: Aoyama@weeb.com, Employee
+2020-08-09 User name changed: Aoyama@weeb.com, Aoyama, Employee
+2020-08-09 User name changed: Aoyama@weeb.com, Gosho Aoyama, Employee
+2020-08-09 User logged in: Aoyama@weeb.com, Employee
+2020-08-09 New job application: Aoyama@weeb.com, Posting: 1
+2020-08-09 Job application removed: Aoyama@weeb.com, Application: 104
+2020-08-09 User logged in: Abbot@hotmail.com, Employer
+2020-08-09 User logged in: Abbot@hotmail.com, Employer
+2020-08-09 New job Posting: Abbot@hotmail.com, Posting: Assistant Manager, manages an assistant, IT
+2020-08-09 Posting Removed: Abbot@hotmail.com, Posting ID: 12
+2020-08-09 New job Posting: Abbot@hotmail.com, Posting: Assistant Manager, manages an assistant, IT
+2020-08-09 Posting Modified: Abbot@hotmail.com, Posting: 13, Assistant Manager, assist manager, IT
+2020-08-09 Posting status change to inactive: Abbot@hotmail.com, Posting: 13
+2020-08-09 Posting status change to active: Abbot@hotmail.com, Posting: 13
+2020-08-09 User signed out: Abbot@hotmail.com
+2020-08-09 User logged in: admin@admin.com, Employee
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: 0
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: 1
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: inactive
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: inactive
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: inactive
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: active
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: inactive
+2020-08-09admin@admin.com updated user: Email: Jan@office.com, Status: active

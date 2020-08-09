@@ -1,5 +1,6 @@
 from flask import Flask, flash, render_template,session, abort, url_for, redirect, request, session
 from flask_bootstrap import Bootstrap
+
 from db_connection import *
 
 app = Flask(__name__)
@@ -22,6 +23,9 @@ def postings():
 def delete_application(application_id):
     if request.method == 'POST':
         remove_job_application(application_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Job application removed: " + session['email'] + ", Application: " + application_id)
+        file.close()
         return redirect('/applied_jobs')
 
 
@@ -44,6 +48,9 @@ def modify_posting(posting_id):
         description = request.form['description']
         category = request.form['category']
         modify_job_posting(posting_id, job_title, description, category)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Posting Modified: " + session['email'] + ", Posting: " + posting_id + ", " + job_title + ", " + description + ", " + category)
+        file.close()
         return redirect('/employer_postings')
     else:
         return render_template('modify_posting.html')
@@ -53,6 +60,9 @@ def modify_posting(posting_id):
 def delete_posting(posting_id):
     if request.method == 'POST':
         remove_job_posting(posting_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Posting Removed: " + session['email'] + ", Posting ID: " + posting_id)
+        file.close()
         return redirect('/employer_postings')
 
 
@@ -60,6 +70,9 @@ def delete_posting(posting_id):
 def set_active(posting_id):
     if request.method == 'POST':
         set_posting_active(posting_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Posting status change to active: " + session['email'] + ", Posting: " + posting_id)
+        file.close()
         return redirect('/employer_postings')
 
 
@@ -67,6 +80,9 @@ def set_active(posting_id):
 def set_inactive(posting_id):
     if request.method == 'POST':
         set_posting_inactive(posting_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Posting status change to inactive: " + session['email'] + ", Posting: " + posting_id)
+        file.close()
         return redirect('/employer_postings')
 
 
@@ -109,6 +125,9 @@ def change_user_profile():
 def delete_user_account():
     email = session['email']
     delete_account(email)
+    file = open("log.txt", "a")
+    file.write("\n" + str(date.today()) + " User deleted: " + session['email'] + ", " + session['user_type'])
+    file.close()
     return redirect(url_for('postings'))
 
 
@@ -119,6 +138,9 @@ def change_user_password():
     print(password)
     if password != "":
         change_password(email, password)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " User password changed: " + session['email'])
+        file.close()
     return render_template('user-profile.html')
 
 
@@ -128,6 +150,9 @@ def change_user_name():
     new_name = request.form['new_name']
     if new_name != "":
         change_name(email, new_name)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " User name changed: " + session['email'] + ", " + new_name)
+        file.close()
     return render_template('user-profile.html')
 
 
@@ -154,6 +179,10 @@ def login():
             session['is_admin'] = account[6]
             session['is_suffering'] = is_frozen[2]
             flash('logged in successfully')
+
+            file = open("log.txt", "a")
+            file.write("\n" + str(date.today()) + " User logged in: " + session['email'] + ", " + session['user_type'])
+            file.close()
             return redirect(url_for('postings'))
         else:
             error = 'Invalid Credentials. Please try again.'
@@ -187,6 +216,9 @@ def register():
             flash('email' + str(account[1]) + 'already registered')
         else:
             register_user(email, password, name, user_type)
+            file = open("log.txt", "a")
+            file.write("\n" + str(date.today()) + " New User added: " + name + ", " + email + ", " + user_type)
+            file.close()
             return render_template('registration.html', msg="USER CREATION SUCCESS")
     return render_template('registration.html', error=error)
 
@@ -198,6 +230,9 @@ def users():
 
 @app.route('/logout')
 def logout():
+    file = open("log.txt", "a")
+    file.write("\n" + str(date.today()) + " User signed out: " + session['email'])
+    file.close()
     session.pop('userID', None)
     session.pop('email', None)
     session.pop('logged_In', None)
@@ -222,6 +257,9 @@ def add_job_application():
                 if num_of_applications[0][0] >= 5:
                     return render_template('add_job_application.html', msg="YOU CANNOT APPLY TO ANY MORE JOBS AS A PRIME USER, 5 APPLICATIONS MADE ALREADY")
                 else:
+                    file = open("log.txt", "a")
+                    file.write("\n" + str(date.today()) + " New job application: " + session['email'] + ", Posting: " + posting_id)
+                    file.close()
                     return render_template('add_job_application.html',
                                            application_result=add_application_job(posting_id, email),
                                            msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
@@ -241,6 +279,9 @@ def add_job_posting():
         description = request.form['description']
         category = request.form['category']
         add_posting_job(email, job_title, description, category)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " New job Posting: " + email + ", Posting: " + job_title + ", " + description + ", " + category)
+        file.close()
         return redirect('/employer_postings')
     else:
         return render_template('add_job_posting.html')
@@ -252,7 +293,22 @@ def admin_activate_user():
         email = request.form['email']
         is_active = request.form['is_active']
         activate_user(email, is_active)
+
+        if is_active == "1":
+            status = "active"
+        else:
+            status = "inactive"
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + session['email'] + " updated user: " + "Email: " + email + ", Status: " + status)
+        file.close()
     return render_template('admin-activate-user.html', list_of_users=get_all_users(False))
+
+
+@app.route('/system_activity')
+def show_system_activity():
+    with open('log.txt', 'r') as file:
+        logs = file.read()
+    return render_template('admin-system-history.html', log=logs)
 
 
 if __name__ == "__main__":
