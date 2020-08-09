@@ -25,9 +25,16 @@ def applied_jobs():
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
-@app.route('/user-profile')
+@app.route('/user-profile', methods=['GET', 'POST'])
 def user_profile():
-    return render_template('user-profile.html')
+    user_category = check_user_category()
+    user_type = user_category[0][0].split(" ")[0:][0]
+    print("user_type ", user_type)
+    if request.method == 'POST':
+        update_user_category(request.form['optradio'])
+        return render_template('user-profile.html', user_type=user_type, msg="SUCCESSFULLY UPDATED YOUR USER CATEGORY")
+    else:
+        return render_template('user-profile.html', user_type=user_type)
 
 
 @app.route('/modify_user_profile', methods=['GET', 'POST'])
@@ -136,10 +143,27 @@ def postings():
 
 @app.route('/add_job_application', methods=['GET', 'POST'])
 def add_job_application():
+    usercategory = check_user_category()
+    print(usercategory[0][0])
+
     if request.method == 'POST':
         posting_id = request.form['posting_id']
         email = request.form['email']
-        return render_template('add_job_application.html', application_result=add_application_job(posting_id, email))
+        if usercategory[0][0] == 'User Basic':
+            return render_template('add_job_application.html', msg="YOU CANNOT APPLY TO JOBS AS A BASIC USER")
+        else:
+            if usercategory[0][0] == 'User Prime':
+                num_of_applications = check_user_num_of_application()
+                if num_of_applications[0][0] >= 5:
+                    return render_template('add_job_application.html', msg="YOU CANNOT APPLY TO ANY MORE JOBS AS A PRIME USER, 5 APPLICATIONS MADE ALREADY")
+                else:
+                    return render_template('add_job_application.html',
+                                           application_result=add_application_job(posting_id, email),
+                                           msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
+            # else they are gold, unlimited application
+            # or they are employer
+            else:
+                return render_template('add_job_application.html', application_result=add_application_job(posting_id, email), msg="YOU SUCCESSFULLY APPLIED TO THE JOB")
     else:
         return render_template('add_job_application.html')
 
