@@ -44,3 +44,4 @@
 2020-08-09 New User added: hello bunny, bunny@bunny.com, Employer
 2020-08-09 User logged in: bunny@bunny.com, Employer
 2020-08-09 User signed out: bunny@bunny.com
+2020-08-09 User logged in: Aoyama@weeb.com, Employee

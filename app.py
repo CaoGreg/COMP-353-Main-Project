@@ -118,7 +118,14 @@ def user_profile():
 
 @app.route('/modify_user_profile', methods=['GET', 'POST'])
 def change_user_profile():
-    return render_template('user-profile.html')
+    user_category = check_user_category()
+    user_type = user_category[0][0].split(" ")[0:][0]
+    print("user_type ", user_type)
+    if request.method == 'POST':
+        update_user_category(request.form['optradio'])
+        return render_template('user-profile.html', user_type=user_type, msg="SUCCESSFULLY UPDATED YOUR USER CATEGORY")
+    else:
+        return render_template('user-profile.html', user_type=user_type)
 
 
 @app.route('/delete_user_account', methods=['POST', 'GET'])
