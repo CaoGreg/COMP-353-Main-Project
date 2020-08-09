@@ -111,11 +111,30 @@ def change_name(email, new_name):
 
 
 def delete_account(email):
-    query = "DELETE FROM MP_User "\
-            "WHERE MP_User.email='" + email + "';"
+    mp_user_query = "DELETE FROM MP_User "\
+                    "WHERE MP_User.email='" + email + "';"
+    mp_bill_query = "DELETE FROM MP_Bill " \
+                    "WHERE MP_Bill.email='" + email + "';"
+    mp_job_application_query = "DELETE FROM MP_Job_application " \
+                               "WHERE MP_Job_application.email='" + email + "';"
+    mp_job_offer_query = "DELETE FROM MP_Job_offer " \
+                         "WHERE MP_Job_offer.email='" + email + "';"
+    mp_paid_using_query = "DELETE FROM MP_Paid_using " \
+                          "WHERE MP_Paid_using.email='" + email + "';"
+    mp_sub_to_query = "DELETE FROM MP_Subscribed_to " \
+                      "WHERE MP_Subscribed_to.email='" + email + "';"
+    mp_user_balance_query = "DELETE FROM MP_User_balance " \
+                            "WHERE MP_User_balance.email='" + email + "';"
+
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
-    cursor.execute(query)
+    cursor.execute(mp_bill_query)
+    cursor.execute(mp_job_application_query)
+    cursor.execute(mp_job_offer_query)
+    cursor.execute(mp_paid_using_query)
+    cursor.execute(mp_sub_to_query)
+    cursor.execute(mp_user_balance_query)
+    cursor.execute(mp_user_query)
     cursor.close()
     db_connection.commit()
     return
