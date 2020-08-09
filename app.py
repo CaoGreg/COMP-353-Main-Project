@@ -104,14 +104,26 @@ def postings():
     return render_template('postings.html', list_of_postings=search_postings(title, category))
 
 
-@app.route('/jobapplication', methods=['GET', 'POST'])
-def jobapplication():
+@app.route('/add_job_application', methods=['GET', 'POST'])
+def add_job_application():
     if request.method == 'POST':
         posting_id = request.form['posting_id']
         email = request.form['email']
-        return render_template('jobapplication.html', application_result=application_job(posting_id, email))
+        return render_template('add_job_application.html', application_result=add_application_job(posting_id, email))
     else:
-        return render_template('jobapplication.html')
+        return render_template('add_job_application.html')
+
+
+@app.route('/add_job_posting', methods=['GET', 'POST'])
+def add_job_posting():
+    if request.method == 'POST':
+        email = request.form['email']
+        job_title = request.form['job_title']
+        description = request.form['description']
+        category = request.form['category']
+        return render_template('add_job_posting.html', posting_result=add_posting_job(email, job_title, description, category))
+    else:
+        return render_template('add_job_posting.html')
 
 
 if __name__ == "__main__":

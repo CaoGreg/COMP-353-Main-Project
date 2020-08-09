@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Add Job Posting Page</h1>
+    <br>
+    <form id="job-application-form" action="" method="post">
+        <input type="email" placeholder="Email" name="email">
+        <input type="text" placeholder="Job Title" name="job_title">
+        <input type="text" placeholder="Description" name="description">
+        <input type="text" placeholder="Category" name="category">
+      <input class="btn btn-success" type="submit" value="Submit Application">
+    </form>
+</div>
+{% endblock %}
