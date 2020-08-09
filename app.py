@@ -11,6 +11,7 @@ def index():
     return render_template('index.html')
 
 
+
 @app.route('/delete_application', methods=['GET', 'POST'])
 def del_application():
     if request.method == 'POST':
@@ -88,26 +89,22 @@ def login():
             return redirect(url_for('index'))
         else:
             error = 'Invalid Credentials. Please try again.'
-            return redirect(url_for('login'))
-
-    # if request.method == 'GET':
-    #     return render_template('forgot')
     return render_template('login.html', error=error)
 
 
-@app.route('/forgot', methods=[ 'POST'])
+@app.route('/forgot', methods=['GET', 'POST'])
 def forgot_password():
     error = None
     # form fields
     if request.method == 'POST':
         email = request.form['email']
         name = request.form['name']
-        password = get_forgotten(email,name)
-        flash('password is: ' + password)
+        password = get_forgotten(email, name)
+        flash('password is: ' + str(password))
     else:
         error = 'Invalid Credentials. Please try again.'
-        return redirect(url_for('forgot'))
     return render_template('forgot.html', error=error)
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def register():
