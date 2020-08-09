@@ -31,6 +31,9 @@ def register_user(email, password, name, user_type):
     cursor.execute("""INSERT INTO MP_User(email, password, name, is_active, user_type, is_admin)
                 VALUES(%s, %s, %s, %s, %s, %s)""",
                    (email, password, name, is_active, user_type, is_admin))
+    cursor.execute("""INSERT INTO MP_User_balance(email, balance, is_suffering)
+                VALUES(%s, 0.00, 0)""",
+                   (email))
     cursor.close()
     db_connection.commit()
     return
