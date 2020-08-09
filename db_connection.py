@@ -57,10 +57,14 @@ def get_forgotten(email, name):
     return password
 
 
-def get_all_users():
+def get_all_users(active_only):
+    query = "SELECT email, name, is_active, user_type, is_admin FROM MP_User"
+    if active_only:
+        query += " WHERE MP_User.is_active = 1;"
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
-    cursor.execute("SELECT email, name, is_active, user_type, is_admin FROM MP_User")
+    print(query)
+    cursor.execute(query)
     data = []
     for row in cursor:
         data.append(row)

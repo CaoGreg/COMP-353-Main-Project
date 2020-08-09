@@ -193,7 +193,7 @@ def register():
 
 @app.route('/users')
 def users():
-    return render_template('users.html', list_of_users=get_all_users())
+    return render_template('users.html', list_of_users=get_all_users(active_only=True))
 
 
 @app.route('/logout')
@@ -252,7 +252,7 @@ def admin_activate_user():
         email = request.form['email']
         is_active = request.form['is_active']
         activate_user(email, is_active)
-    return render_template('admin-activate-user.html', list_of_users=get_all_users())
+    return render_template('admin-activate-user.html', list_of_users=get_all_users(False))
 
 
 if __name__ == "__main__":
