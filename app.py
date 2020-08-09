@@ -11,7 +11,6 @@ def index():
     return render_template('index.html')
 
 
-
 @app.route('/delete_application', methods=['GET', 'POST'])
 def del_application():
     if request.method == 'POST':
@@ -22,9 +21,7 @@ def del_application():
 
 @app.route('/applied_jobs')
 def applied_jobs():
-    #update with email once session is done
-    email = 'aoyama@weeb.com'
-
+    email = session['email']
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
@@ -47,16 +44,14 @@ def change_user_profile():
 
 @app.route('/delete_user_account', methods=['POST', 'GET'])
 def delete_user_account():
-    # update with email once session is done
-    email = 'dummy@weeb.com'
+    email = session['email']
     delete_account(email)
     return redirect(url_for('index'))
 
 
 @app.route('/modify_password', methods=['POST', 'GET'])
 def change_user_password():
-    # update with email once session is done
-    email = 'aoyama@weeb.com'
+    email = session['email']
     password = request.form['new_password']
     print(password)
     if password != "":
@@ -66,8 +61,7 @@ def change_user_password():
 
 @app.route('/modify_name', methods=['POST', 'GET'])
 def change_user_name():
-    # update with email once session is done
-    email = 'aoyama@weeb.com'
+    email = session['email']
     new_name = request.form['new_name']
     if new_name != "":
         change_name(email, new_name)
@@ -88,7 +82,8 @@ def login():
             session['logged_In'] = True
             session['userID'] = account[0]
             session['email'] = account[1]
-            session_user = session['email']
+            session['user_type'] = account[5]
+            session['is_admin'] = account[6]
             flash('logged in successfully')
             return redirect(url_for('index'))
         else:
