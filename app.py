@@ -25,6 +25,31 @@ def applied_jobs():
     return render_template('applied-jobs-results.html', list_of_job_applications=get_job_applications(email))
 
 
+@app.route('/employer_postings/')
+def employer_postings():
+    email = session['email']
+    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
+
+
+#@app.route('/employer_postings/')
+#def employer_postings():
+#    email = session['email']
+#    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
+
+
+#@app.route('/employer_postings/')
+#def employer_postings():
+#    email = session['email']
+#    return render_template('employer-postings.html', list_of_job_postings=get_job_postings(email))
+
+
+@app.route('/employer_postings/delete_posting/<posting_id>', methods=['GET', 'POST'])
+def delete_posting(posting_id):
+    if request.method == 'GET':
+        remove_job_posting(posting_id)
+        return employer_postings()
+
+
 @app.route('/user-profile')
 def user_profile():
     return render_template('user-profile.html')
@@ -147,7 +172,7 @@ def add_job_application():
 @app.route('/add_job_posting', methods=['GET', 'POST'])
 def add_job_posting():
     if request.method == 'POST':
-        email = request.form['email']
+        email = session['email']
         job_title = request.form['job_title']
         description = request.form['description']
         category = request.form['category']

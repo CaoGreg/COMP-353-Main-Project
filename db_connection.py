@@ -67,7 +67,20 @@ def get_job_applications(email):
         data.append(row)
     cursor.close()
     return data
-  
+
+
+def get_job_postings(user_id):
+    query = "SELECT * FROM MP_Job_posting " \
+            "WHERE MP_Job_posting.email = '" + user_id + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    data = []
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    return data
+
 
 def search_postings(title, category):
     data = []
@@ -93,7 +106,18 @@ def remove_job_application(application_id):
     db_connection.commit()
     return
 
-  
+
+def remove_job_posting(posting_id):
+    query = "DELETE FROM MP_Job_posting "\
+            "WHERE MP_Job_posting.posting_id = " + posting_id + ";"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
 def add_application_job(posting_id, email):
     data = []
     today = date.today()
