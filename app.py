@@ -178,14 +178,16 @@ def login():
             session['user_type'] = account[5]
             session['is_admin'] = account[6]
             session['is_suffering'] = is_frozen[2]
-            flash('logged in successfully')
 
             file = open("log.txt", "a")
             file.write("\n" + str(date.today()) + " User logged in: " + session['email'] + ", " + session['user_type'])
             file.close()
+
+            flash('logged in successfully','success')
             return redirect(url_for('postings'))
         else:
             error = 'Invalid Credentials. Please try again.'
+            return render_template('login.html', error=error)
     return render_template('login.html', error=error)
 
 
@@ -197,9 +199,10 @@ def forgot_password():
         email = request.form['email']
         name = request.form['name']
         password = get_forgotten(email, name)
-        flash('password is: ' + str(password[0]))
-    else:
-        error = 'Invalid Credentials. Please try again.'
+        if password:
+            return render_template('forgot.html', msg ='password is: ' + str(password[0]))
+        else:
+            error = 'Invalid Credentials. Please try again.'
     return render_template('forgot.html', error=error)
 
 
@@ -213,7 +216,7 @@ def register():
         user_type = request.form['user_type']
         account = get_login(email, password)
         if account:
-            flash('email' + str(account[1]) + 'already registered')
+            error = 'email :' + str(account[1]) + ' is already registered'
         else:
             register_user(email, password, name, user_type)
             file = open("log.txt", "a")
@@ -236,8 +239,8 @@ def logout():
     session.pop('userID', None)
     session.pop('email', None)
     session.pop('logged_In', None)
-    flash('You are logged out.')
     session['logged_In'] = False
+    flash('You are logged out.','success')
     return redirect('/')
 
 

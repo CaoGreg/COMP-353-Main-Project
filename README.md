@@ -15,9 +15,9 @@
  
  `ENCS_PWD=YOUR_ENCS_PASSWORD`
 
- `DB_USR=oxc353_1`
+ `DB_USR=DB_USERNAME`
 
- `DB_PWD=bobatea1`
+ `DB_PWD=DB_PASSWORD`
 
 ## Starting the App
 * cd into folder and write in terminal  `python app.py` to start the web app
