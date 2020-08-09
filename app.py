@@ -75,7 +75,8 @@ def login():
             session['logged_In'] = True
             session['userID'] = account[0]
             session['email'] = account[1]
-            session_user = session['email']
+            session['user_type'] = account[5]
+            session['is_admin'] = account[6]
             flash('logged in successfully')
             return redirect(url_for('index'))
         else:
