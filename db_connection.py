@@ -84,6 +84,20 @@ def search_postings(title, category):
     return data
 
 
+def get_postings():
+    data = []
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    query = "SELECT posting_id,MP_Job_posting.email,job_title,description,posting_date,status,category,phone " \
+            "FROM MP_Job_posting,MP_Employer " \
+            "WHERE MP_Job_posting.email = MP_Employer.email;"
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    return data
+
+
 def remove_job_application(application_id):
     query = "DELETE FROM MP_Job_application "\
             "WHERE MP_Job_application.application_id = " + application_id + ";"
