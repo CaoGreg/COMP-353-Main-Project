@@ -344,6 +344,34 @@ def show_system_activity():
     return render_template('admin-system-history.html', log=logs)
 
 
+# @app.route('/add_payment_method')
+# def payment_method():
+#     return render_template('payment.html', list_of_payment=get_payment())
+
+
+@app.route('/delete_payment_method/<payment_id>', methods=['GET', 'POST'])
+def delete_payment_method(payment_id):
+    if request.method == 'POST':
+        remove_payment_method(payment_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Payment Method removed: " + session['email'] + ", Payement: " + payment_id)
+        file.close()
+        return redirect('/applied_jobs')
+
+
+@app.route('/add_payment_method', methods=['GET', 'POST'])
+def add_payment_method():
+    if request.method == 'POST':
+        payment_number = request.form['payment_number']
+        payment_type = request.form['payment_type']
+        withdrawal_type = request.form['withdrawal_type']
+        insert_payment_method(payment_number, payment_type, withdrawal_type)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Payment Method added: " + session['email'] + ", Payement: " + payment_number)
+        file.close()
+    return render_template('payment.html', list_of_payment=get_payment())
+
+
 if __name__ == "__main__":
     app.secret_key = 'secret123'
     app.run(debug=True)

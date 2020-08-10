@@ -54,6 +54,18 @@
               </div>
             </li>
             {% endif %}
+            {% if session['logged_In'] == True %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPayment" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Payment
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="add_payment_method">Add/Modify a Method of Payment</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="payment_warnings">Payment Warnings</a>
+              </div>
+            </li>
+            {% endif %}
           </ul>
             <form class="form-inline row" method="post">
                 {% if session['logged_In'] == True %}

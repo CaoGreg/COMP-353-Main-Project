@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>List of Payment Methods</h1>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Payment Number</th>
+          <th scope="col">Payment Type</th>
+          <th scope="col">Withdrawal Type</th>
+        </tr>
+        {% for payment in list_of_payment %}
+        <tr>
+            <td>{{ payment[0] }}</td>
+            <td>{{ payment[1] }}</td>
+            <td>{{ payment[2] }}</td>
+            <form method="POST" action="/delete_payment_method/{{ payment_method[0] }}">
+                <input type="submit" value="Remove" /></form></td>
+        </tr>
+        {% endfor %}
+      </thead>
+      <tbody>
+      <br>
+        <form id="add_payment_method" action="/add_payment_method" method="post">
+            <input type="text" placeholder="Payment Number" name="payment_number">
+            <input type="text" placeholder="Payment Type" name="payment_type">
+            <input type="text" placeholder="Withdrawal Type" name="withdrawal_type">
+            <input class="btn btn-success" type="submit" value="Submit">
+        </form>
+      </tbody>
+    </table>
+</div>
+{% endblock %}

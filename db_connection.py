@@ -404,3 +404,43 @@ def get_frozen(email):
     is_suffering = cursor.fetchone()
     cursor.close()
     return is_suffering
+
+
+def get_payment():
+    data = []
+    query = "SELECT MP_Payment_type.payment_number,payment_type,withdrawal_type FROM MP_Paid_using, MP_Payment_type "\
+            "WHERE MP_Paid_using.payment_number = MP_Payment_type.payment_number and email = '" + session['email'] + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    cursor.close()
+    return data
+
+
+def remove_payment_method(payment_id):
+    query1 = "DELETE FROM MP_Paid_using WHERE payment_number = '" + payment_id + "';"
+    query2 = "DELETE FROM MP_Payment_type WHERE payment_number = '" + payment_id + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query1)
+    cursor.execute(query2)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def insert_payment_method(payment_number, payment_type, withdrawal_type):
+    query1 = "INSERT INTO MP_Payment_type(payment_number, payment_type, withdrawal_type) VALUES "\
+             "('" + payment_number + "', '" + payment_type + "', '" + withdrawal_type + "');"
+    query2 = "INSERT INTO MP_Paid_using(email, payment_number) VALUES "\
+             "('" + payment_number + "', '" + session['email'] + "');"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query1)
+    cursor.execute(query2)
+    cursor.close()
+    db_connection.commit()
+    return
