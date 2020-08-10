@@ -20,7 +20,7 @@
             <td>{{ payment[0] }}</td>
             <td>{{ payment[1] }}</td>
             <td>{{ payment[2] }}</td>
-            <form method="POST" action="/delete_payment_method/{{ payment_method[0] }}">
+            <td><form method="POST" action="/delete_payment_method/{{ payment[0] }}">
                 <input type="submit" value="Remove" /></form></td>
         </tr>
         {% endfor %}

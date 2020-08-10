@@ -45,3 +45,32 @@
 2020-08-09 User logged in: bunny@bunny.com, Employer
 2020-08-09 User signed out: bunny@bunny.com
 2020-08-09 User logged in: Aoyama@weeb.com, Employee
+2020-08-10 User signed out: Aoyama@weeb.com
+2020-08-10 User logged in: Aoyama@weeb.com, Employee
+2020-08-10 User signed out: Aoyama@weeb.com
+2020-08-10 User had been frozen: Aoyama@weeb.com
+2020-08-10 User had been frozen: Aoyama@weeb.com
+2020-08-10 User had been frozen: Aoyama@weeb.com
+2020-08-10 User had been deactivated: Aoyama@weeb.com
+2020-08-10 User logged in: Aoyama@weeb.com, Employee
+2020-08-10 User signed out: Aoyama@weeb.com
+2020-08-10 User had been frozen: Aoyama@weeb.com
+2020-08-10 User had been deactivated: Aoyama@weeb.com
+2020-08-10 User had been frozen: david@gmail.com
+2020-08-10 User had been deactivated: david@gmail.com
+2020-08-10 User logged in: David@gmail.com, Employee
+2020-08-10 User signed out: David@gmail.com
+2020-08-10 User had been frozen: david@gmail.com
+2020-08-10 User had been deactivated: david@gmail.com
+2020-08-10 User had been frozen: marcel@user.com
+2020-08-10 User had been deactivated: marcel@user.com
+2020-08-10 New User added: greg greg, greg@greg.com, Employee
+2020-08-10 User had been frozen: greg@greg.com
+2020-08-10 User had been deactivated: greg@greg.com
+2020-08-10 User had been frozen: greg@greg.com
+2020-08-10 User had been deactivated: greg@greg.com
+2020-08-10 User logged in: admin@admin.com, Employee
+2020-08-10admin@admin.com updated user: Email: greg@greg.com, Status: active
+2020-08-10 User signed out: admin@admin.com
+2020-08-10 User logged in: greg@greg.com, Employee
+2020-08-10 User signed out: greg@greg.com

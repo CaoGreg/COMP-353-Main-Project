@@ -172,9 +172,13 @@ def login():
         email = request.form['username']
         password = request.form['password']
         account = get_login(email, password)
-        is_frozen = get_frozen(email)
 
         if account:
+            if check_account_frozen(email) != []:
+                set_frozen(email)
+            check_deactivate(email)
+            is_frozen = get_frozen(email)
+            account = get_login(email, password)
             if account[4] == 0:
                 error = 'Your account is deactivated. Please contact a system administrator'
                 return render_template('login.html', error=error)
@@ -342,11 +346,6 @@ def show_system_activity():
     with open('log.txt', 'r') as file:
         logs = file.read()
     return render_template('admin-system-history.html', log=logs)
-
-
-# @app.route('/add_payment_method')
-# def payment_method():
-#     return render_template('payment.html', list_of_payment=get_payment())
 
 
 @app.route('/delete_payment_method/<payment_id>', methods=['GET', 'POST'])

@@ -416,7 +416,6 @@ def get_payment():
     for row in cursor:
         data.append(row)
     cursor.close()
-    cursor.close()
     return data
 
 
@@ -443,4 +442,50 @@ def insert_payment_method(payment_number, payment_type, withdrawal_type):
     cursor.execute(query2)
     cursor.close()
     db_connection.commit()
+    return
+
+
+def check_account_frozen(email):
+    data = []
+    query = "select * from MP_Bill where payment_date is null and email = '" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    print(data)
+    return data
+
+
+def set_frozen(email):
+    query = "UPDATE MP_User_balance SET is_suffering = " + str(1) + " "\
+            "WHERE MP_User_balance.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    file = open("log.txt", "a")
+    file.write("\n" + str(date.today()) + " User had been frozen: " + email)
+    file.close()
+    return
+
+
+def check_deactivate(email):
+    query = "SELECT MIN(bill_date) FROM MP_User, MP_User_balance, MP_Bill "\
+            "WHERE MP_User.email = MP_User_balance.email AND MP_User.email = MP_Bill.email "\
+            "AND payment_date IS NULL AND bill_date < (select DATE_ADD(NOW(), INTERVAL -60 MINUTE)) "\
+            "AND MP_User.email= '" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    data = cursor.fetchone()
+    print(data)
+    if data[0] is not None:
+        activate_user(email, "0")
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " User had been deactivated: " + email)
+        file.close()
+    cursor.close()
     return
