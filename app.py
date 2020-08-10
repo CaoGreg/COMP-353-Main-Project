@@ -172,9 +172,13 @@ def login():
         email = request.form['username']
         password = request.form['password']
         account = get_login(email, password)
-        is_frozen = get_frozen(email)
 
         if account:
+            if check_account_frozen(email) != []:
+                set_frozen(email)
+            check_deactivate(email)
+            is_frozen = get_frozen(email)
+            account = get_login(email, password)
             if account[4] == 0:
                 error = 'Your account is deactivated. Please contact a system administrator'
                 return render_template('login.html', error=error)
