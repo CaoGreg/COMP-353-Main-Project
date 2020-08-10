@@ -47,6 +47,7 @@ def register_user(email, password, name, user_type):
     db_connection.commit()
     return
 
+
 def register_employer(email,phone):
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -56,6 +57,7 @@ def register_employer(email,phone):
     cursor.close()
     db_connection.commit()
     return
+
 
 def get_login(email, password):
     cursor = db_connection.cursor()
@@ -375,8 +377,7 @@ def update_user_category(new_category):
     cursor.execute("""UPDATE MP_Subscribed_to
     SET category = %s
     WHERE email = %s
-    """,
-        (new_category, email))
+    """, (new_category, email))
     for row in cursor:
         data.append(row)
     cursor.close()
@@ -435,7 +436,7 @@ def remove_payment_method(payment_id):
 def insert_payment_method(payment_number, payment_type, withdrawal_type):
     query1 = "INSERT INTO MP_Payment_type(payment_number, payment_type, withdrawal_type) VALUES "\
              "('" + payment_number + "', '" + payment_type + "', '" + withdrawal_type + "');"
-    query2 = "INSERT INTO MP_Paid_using(email, payment_number) VALUES "\
+    query2 = "INSERT INTO MP_Paid_using(payment_number, email) VALUES "\
              "('" + payment_number + "', '" + session['email'] + "');"
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -443,4 +444,10 @@ def insert_payment_method(payment_number, payment_type, withdrawal_type):
     cursor.execute(query2)
     cursor.close()
     db_connection.commit()
+    return
+
+
+def modify_payment_method(payment_number, new_payment_number, payment_type, withdrawal_type):
+    insert_payment_method(new_payment_number, payment_type, withdrawal_type)
+    remove_payment_method(payment_number)
     return

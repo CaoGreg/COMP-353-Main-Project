@@ -14,13 +14,17 @@
           <th scope="col">Payment Number</th>
           <th scope="col">Payment Type</th>
           <th scope="col">Withdrawal Type</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
         {% for payment in list_of_payment %}
         <tr>
             <td>{{ payment[0] }}</td>
             <td>{{ payment[1] }}</td>
             <td>{{ payment[2] }}</td>
-            <form method="POST" action="/delete_payment_method/{{ payment_method[0] }}">
+            <td><form method="GET" action="/modify_payment_method/{{ payment[0] }}">
+                <input type="submit" value="Modify" /></form></td>
+            <td><form method="POST" action="/delete_payment_method/{{ payment[0] }}">
                 <input type="submit" value="Remove" /></form></td>
         </tr>
         {% endfor %}
