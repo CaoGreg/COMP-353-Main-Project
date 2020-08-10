@@ -47,6 +47,7 @@ def register_user(email, password, name, user_type):
     db_connection.commit()
     return
 
+
 def register_employer(email,phone):
     cursor = db_connection.cursor()
     cursor.execute("USE oxc353_1")
@@ -56,6 +57,7 @@ def register_employer(email,phone):
     cursor.close()
     db_connection.commit()
     return
+
 
 def get_login(email, password):
     cursor = db_connection.cursor()
@@ -375,8 +377,7 @@ def update_user_category(new_category):
     cursor.execute("""UPDATE MP_Subscribed_to
     SET category = %s
     WHERE email = %s
-    """,
-        (new_category, email))
+    """, (new_category, email))
     for row in cursor:
         data.append(row)
     cursor.close()
@@ -404,3 +405,93 @@ def get_frozen(email):
     is_suffering = cursor.fetchone()
     cursor.close()
     return is_suffering
+
+
+def get_payment():
+    data = []
+    query = "SELECT MP_Payment_type.payment_number,payment_type,withdrawal_type FROM MP_Paid_using, MP_Payment_type "\
+            "WHERE MP_Paid_using.payment_number = MP_Payment_type.payment_number and email = '" + session['email'] + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    return data
+
+
+def remove_payment_method(payment_id):
+    query1 = "DELETE FROM MP_Paid_using WHERE payment_number = '" + payment_id + "';"
+    query2 = "DELETE FROM MP_Payment_type WHERE payment_number = '" + payment_id + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query1)
+    cursor.execute(query2)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def insert_payment_method(payment_number, payment_type, withdrawal_type):
+    query1 = "INSERT INTO MP_Payment_type(payment_number, payment_type, withdrawal_type) VALUES "\
+             "('" + payment_number + "', '" + payment_type + "', '" + withdrawal_type + "');"
+    query2 = "INSERT INTO MP_Paid_using(payment_number, email) VALUES "\
+             "('" + payment_number + "', '" + session['email'] + "');"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query1)
+    cursor.execute(query2)
+    cursor.close()
+    db_connection.commit()
+    return
+
+
+def modify_payment_method(payment_number, new_payment_number, payment_type, withdrawal_type):
+    insert_payment_method(new_payment_number, payment_type, withdrawal_type)
+    remove_payment_method(payment_number)
+    
+    
+def check_account_frozen(email):
+    data = []
+    query = "select * from MP_Bill where payment_date is null and email = '" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    for row in cursor:
+        data.append(row)
+    cursor.close()
+    print(data)
+    return data
+
+
+def set_frozen(email):
+    query = "UPDATE MP_User_balance SET is_suffering = " + str(1) + " "\
+            "WHERE MP_User_balance.email='" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    cursor.close()
+    db_connection.commit()
+    file = open("log.txt", "a")
+    file.write("\n" + str(date.today()) + " User had been frozen: " + email)
+    file.close()
+    return
+
+
+def check_deactivate(email):
+    query = "SELECT MIN(bill_date) FROM MP_User, MP_User_balance, MP_Bill "\
+            "WHERE MP_User.email = MP_User_balance.email AND MP_User.email = MP_Bill.email "\
+            "AND payment_date IS NULL AND bill_date < (select DATE_ADD(NOW(), INTERVAL -60 MINUTE)) "\
+            "AND MP_User.email= '" + email + "';"
+    cursor = db_connection.cursor()
+    cursor.execute("USE oxc353_1")
+    cursor.execute(query)
+    data = cursor.fetchone()
+    print(data)
+    if data[0] is not None:
+        activate_user(email, "0")
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " User had been deactivated: " + email)
+        file.close()
+    cursor.close()
+    return

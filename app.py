@@ -172,9 +172,13 @@ def login():
         email = request.form['username']
         password = request.form['password']
         account = get_login(email, password)
-        is_frozen = get_frozen(email)
 
         if account:
+            if check_account_frozen(email) != []:
+                set_frozen(email)
+            check_deactivate(email)
+            is_frozen = get_frozen(email)
+            account = get_login(email, password)
             if account[4] == 0:
                 error = 'Your account is deactivated. Please contact a system administrator'
                 return render_template('login.html', error=error)
@@ -332,7 +336,7 @@ def admin_activate_user():
         else:
             status = "inactive"
         file = open("log.txt", "a")
-        file.write("\n" + str(date.today()) + session['email'] + " updated user: " + "Email: " + email + ", Status: " + status)
+        file.write("\n" + str(date.today()) + " " + session['email'] + " updated user: " + "Email: " + email + ", Status: " + status)
         file.close()
     return render_template('admin-activate-user.html', list_of_users=get_all_users(False))
 
@@ -342,6 +346,49 @@ def show_system_activity():
     with open('log.txt', 'r') as file:
         logs = file.read()
     return render_template('admin-system-history.html', log=logs)
+
+
+@app.route('/delete_payment_method/<payment_id>', methods=['GET', 'POST'])
+def delete_payment_method(payment_id):
+    if request.method == 'POST':
+        remove_payment_method(payment_id)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Payment Method removed: " + session['email'] + ", Payement: " + payment_id)
+        file.close()
+        return redirect('/view_payment_methods')
+
+
+@app.route('/add_payment_method', methods=['GET', 'POST'])
+def add_payment_method():
+    if request.method == 'POST':
+        payment_number = request.form['payment_number']
+        payment_type = request.form['payment_type']
+        withdrawal_type = request.form['withdrawal_type']
+        insert_payment_method(payment_number, payment_type, withdrawal_type)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Payment Method added: " + session['email'] + ", Payement: " + payment_number)
+        file.close()
+        return redirect('/view_payment_methods')
+    return render_template('add-payment.html')
+
+
+@app.route('/modify_payment_method/<payment_number>', methods=['GET', 'POST'])
+def modify_payment(payment_number):
+    if request.method == 'POST':
+        new_payment_number = request.form['payment_number']
+        payment_type = request.form['payment_type']
+        withdrawal_type = request.form['withdrawal_type']
+        modify_payment_method(payment_number, new_payment_number, payment_type, withdrawal_type)
+        file = open("log.txt", "a")
+        file.write("\n" + str(date.today()) + " Payment Method changed: " + session['email'] + ", Payement: " + payment_number)
+        file.close()
+        return redirect('/view_payment_methods')
+    return render_template('modify_payment.html')
+
+
+@app.route('/view_payment_methods')
+def view_payment_methods():
+    return render_template('payment.html', list_of_payment=get_payment())
 
 
 if __name__ == "__main__":

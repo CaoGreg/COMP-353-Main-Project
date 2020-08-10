@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Modify Payment Method</h1>
+    <br>
+    <form id="modify-payment-form" action="" method="post">
+    <div class="form-group">
+        <label for='payment-number'>Payment Number</label>
+        <input type="text" class="form-control" placeholder="Payment Number" name="payment_number">
+    </div>
+    <div class="form-group">
+        <label for="payment-type">Payment Type</label>
+        <select id="payment-type" class="form-control" name="payment_type">
+            <option name="payment_type" value="Checking account">Checking Account</option>
+            <option name="payment_type" value="Credit card">Credit Card</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="withdrawal">Withdrawal Type</label>
+        <select id="withdrawal" class="form-control" name="withdrawal_type">
+            <option name="withdrawal_type" value="Automatic">Automatic</option>
+            <option name="withdrawal_type" value="Manual">Manual</option>
+        </select>
+    </div>
+     <div class="text-center">
+        <input class="btn btn-success" type="submit" value="Modify Payment">
+    </div>
+    </form>
+</div>
+{% endblock %}
