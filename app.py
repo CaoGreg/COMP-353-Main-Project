@@ -368,7 +368,8 @@ def add_payment_method():
         file = open("log.txt", "a")
         file.write("\n" + str(date.today()) + " Payment Method added: " + session['email'] + ", Payement: " + payment_number)
         file.close()
-    return render_template('payment.html', list_of_payment=get_payment())
+        return redirect('/view_payment_methods')
+    return render_template('add-payment.html')
 
 
 @app.route('/modify_payment_method/<payment_number>', methods=['GET', 'POST'])
